@@ -1,0 +1,46 @@
+
+.camera__list {
+  width:100%;
+  height:100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  transition: 1.5s;
+  overflow:hidden;
+}
+
+
+.camera__item {
+  min-width: 100%;
+  min-height: 3.25rem;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: .5rem;
+  padding: 1rem;
+  background-color: var(--button-bg-color);
+  border-radius: 5px;
+  border: 1px solid var(--button-outline-color);
+}
+
+.camera__title {
+  position: relative;
+}
+
+.camera__item:hover {
+  color: #FFFFFF;
+  cursor: pointer;
+  border: 1px solid var(--button-hover-outline-color);
+}
+
+.camera__item-icon {
+  position: absolute;
+  right: 1rem;
+}
+
+.camera__item-icon > i {
+  font-size: calc(var(--icon-size) + .25rem);
+}
+

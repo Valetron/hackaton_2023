@@ -5,3 +5,58 @@
 }
 
 
+@font-face {
+  font-family: "Poppins";
+  src: local("Poppins"),
+  url("../font/Poppins.ttf") format("truetype");
+  font-weight: bold;
+}
+
+:root {
+  /* Colors */
+  --title-color-hover: #C9C9C9; 
+  --text-color: #D9D9D9; 
+  --body-color: #3C5E8B;
+  --container-color: #14213D;
+  --button-bg-color: #3C5E8B;
+  --button-hover-outline-color: #3A86FF;
+  --button-outline-color: #253A5E;
+
+
+  /* font */
+  --body-font: 'Poppins', sans-serif;
+
+  /* 1rem = 16px */
+  --big-font-size: 3.5rem;
+  --h1-font-size: 2.25rem;
+  --h2-font-size: 1.5rem;
+  --h3-font-size: 1.25rem;
+  --normal-font-size: 1rem;
+  --small-font-size: 0.875rem;
+
+  /* icon size */
+  --icon-size: 1.5rem;
+
+}
+
+.button {
+  display: inline-block;
+  background-color: var(--title-color);
+  color: var(--container-color);
+  padding: 1.25rem 2rem;
+  border-radius: 1rem;
+  font-weight: 500;
+}
+
+.button:hover {
+  background-color: var(--title-color-dark);
+}
+
+.button__icon {
+  margin-left: .5rem;
+}
+
+.button__flex {
+  display: inline-flex;
+  align-items: center;
+}
