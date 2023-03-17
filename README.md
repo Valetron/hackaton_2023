@@ -8,4 +8,4 @@
 ```
 docker-compose up -d
 ```
-3. Перейти по адресу _localhost:5173_
+3. Перейти по адресу [_localhost:5173_](localhost:5173)
