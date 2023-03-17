@@ -1,3 +1,6 @@
+# videos
+*.avi
+
 # Logs
 logs
 *.log
