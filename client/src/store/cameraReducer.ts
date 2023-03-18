@@ -17,6 +17,12 @@ const initialState = {
       name: 'Cam1',
       areas: [],
       link: 'none'
+    },
+    {
+      id: 2,
+      name: 'Cam2',
+      areas: [],
+      link: 'none'
     }
   ]
 }

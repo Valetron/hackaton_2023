@@ -1,15 +1,20 @@
+.camera__container {
+  padding: 1rem 0;
+  width: 100%;
+  height: auto;
+}
+
 
 .camera__list {
   width:100%;
-  height:100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
   transition: 1.5s;
   overflow:hidden;
+  margin-bottom: 1rem;
 }
-
 
 .camera__item {
   min-width: 100%;
@@ -43,4 +48,77 @@
 .camera__item-icon > i {
   font-size: calc(var(--icon-size) + .25rem);
 }
+
+.camera__add-item button {
+  color: var(--text-color);
+  min-width: 100%;
+  min-height: 3.25rem;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: .5rem;
+  padding: 1rem;
+  background-color: #4F8FBA;
+  border-radius: 5px;
+  border: 1px solid var(--button-outline-color);
+}
+
+.camera__add-item button:focus {
+  outline: none;
+}
+
+.camera-add__container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.camera-add__item {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1 0 0;
+  position: relative;
+  width: 32rem;
+  height: 16rem; 
+  background-color: var(--container-color);
+
+  &__title {
+   color: var(--title-color);
+   padding: .5rem 1rem;
+  }
+
+  &__form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+  }
+
+  &__form input {
+    padding: 0 .25rem ;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #fff;
+    color: var(--text-color);
+  }
+
+  &__buttons {
+    padding: 0 1rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+}
+
+
 
