@@ -10,6 +10,8 @@ function App() {
   const addCameraModal = useAppSelector(state => state.addCameraModal.opened)
   const dispatch = useAppDispatch()
 
+  const currentCamera = useAppSelector(state => state.currentCamera.selectedCamera)
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -17,6 +19,9 @@ function App() {
         {addCameraModal &&
           <CameraAdd />
         }
+        <main>
+          <div>{currentCamera.name}{currentCamera.link}</div>
+        </main>
       </BrowserRouter>
     </div >
   )

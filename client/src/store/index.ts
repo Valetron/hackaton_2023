@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { cameraReducer } from "./cameraReducer";
 import { addCameraModal } from "./cameraAddReducer";
+import { currentCamera } from "./cameraSelectionReducer";
 
 export const store = configureStore({
   reducer: {
     cameraArray: cameraReducer,
-    addCameraModal: addCameraModal
+    addCameraModal: addCameraModal,
+    currentCamera: currentCamera
   }
 })
 

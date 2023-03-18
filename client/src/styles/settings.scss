@@ -21,6 +21,7 @@
   --button-bg-color: #3C5E8B;
   --button-hover-outline-color: #3A86FF;
   --button-outline-color: #253A5E;
+  --button-action-color: #4F8FBA;
 
 
   /* font */
@@ -39,24 +40,3 @@
 
 }
 
-.button {
-  display: inline-block;
-  background-color: var(--title-color);
-  color: var(--container-color);
-  padding: 1.25rem 2rem;
-  border-radius: 1rem;
-  font-weight: 500;
-}
-
-.button:hover {
-  background-color: var(--title-color-dark);
-}
-
-.button__icon {
-  margin-left: .5rem;
-}
-
-.button__flex {
-  display: inline-flex;
-  align-items: center;
-}

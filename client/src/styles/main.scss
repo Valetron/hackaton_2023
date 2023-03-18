@@ -19,12 +19,15 @@ textarea {
 }
 
 body {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
   background-color: var(--body-color);
   color: var(--text-color);
   overflow: hidden;
+}
+
+.App {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 h1, h2 {
@@ -53,10 +56,6 @@ button {
 img {
   max-width: 100%;
   height: auto;
-}
-
-section {
-  padding: 6rem 0 2rem;
 }
 
 .section__title {
