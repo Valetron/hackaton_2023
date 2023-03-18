@@ -9,3 +9,8 @@
 docker-compose up -d
 ```
 3. Перейти по адресу [_localhost:5173_](localhost:5173)
+4. Для остановки контейнера выполнить:
+```
+docker-compose down
+```
+
