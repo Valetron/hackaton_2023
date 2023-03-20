@@ -1,32 +1,36 @@
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import CameraItem from "./CameraItem"
-import { addCameraAction, CamerasObjectArray } from '../../store/cameraReducer'
+import { CamerasObjectArray } from '../../store/cameraReducer'
 import './Cameras.scss'
 import { openAddCameraModalAction } from "../../store/cameraAddReducer"
 import { updateSelectedCamera } from "../../store/cameraSelectionReducer"
+import { useNavigate } from "react-router-dom"
 
 
 
 export default function CamerasList() {
 
-  const [cameraName, setCameraName] = useState<string>()
-
   const cameraArray = useAppSelector(state => state.cameraArray.cameraArray)
   const selectedCamera = useAppSelector(state => state.currentCamera.selectedCamera)
   const dispatch = useAppDispatch()
+
+
+  const navigate = useNavigate()
 
   const addCameraOpen = () => {
     dispatch(openAddCameraModalAction({ opened: true }))
   }
 
   const selectCameraHandler = (item: CamerasObjectArray) => {
-    dispatch(updateSelectedCamera({ ...item }))
-    console.log(selectedCamera)
+      dispatch(updateSelectedCamera({ ...item }))
+      navigate(`${item.id}`)
   }
 
   useEffect(() => {
+    if (selectedCamera.id !== undefined) {
 
+    }
   }, [])
 
   return (
@@ -38,6 +42,7 @@ export default function CamerasList() {
               key={index}
               name={item.name}
               onPress={() => selectCameraHandler(item)}
+              isSelected={selectedCamera.id === item.id}
             />
           ))
         }

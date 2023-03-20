@@ -24,7 +24,13 @@ body {
   overflow: hidden;
 }
 
+main {
+  flex-grow: 1;
+}
+
 .App {
+  width: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

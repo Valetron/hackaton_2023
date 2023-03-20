@@ -8,8 +8,9 @@ export default function CameraAdd() {
 
   const [cameraName, setCameraName] = useState<string>('')
   const [cameraLink, setCameraLink] = useState<string>('')
-
   const [onError, setError] = useState<boolean>(false)
+
+  const dispatch = useAppDispatch()
 
   const closeWindow = () => {
     dispatch(openAddCameraModalAction(false))
@@ -29,22 +30,23 @@ export default function CameraAdd() {
     closeWindow()
   }
 
-  const dispatch = useAppDispatch()
-
-
-  useEffect(() => {
-    let a: any
+  const blinkingPlaceholder = () => {
+    let blink: any
 
     if (onError) {
-       a = setInterval(() => {
+       blink = setInterval(() => {
         setError(false)
       }, 200)
     }
 
     return () => {
-      clearInterval(a)
+      clearInterval(blink)
     }
 
+  }
+
+  useEffect(() => {
+    blinkingPlaceholder()
   }, [onError])
 
 

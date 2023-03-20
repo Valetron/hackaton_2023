@@ -1,0 +1,128 @@
+.camera-settings__container {
+  height: 100vh;
+  width: 18rem;
+  font-size: 0.875rem;
+  background-color: var(--container-color); 
+  padding: 1rem;
+  font-weight: 700;
+  font-size: var(--norma-font-size);
+  transition: transform 1s ease-out;
+}
+
+.camera-settings__title {
+  text-align: center;
+  font-size: var(--larger-font);
+}
+
+.camera-settings__content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.camera-settings__content input {
+  width: 100%;
+  padding: 0 .25rem ;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #fff;
+  color: var(--text-color);
+}
+
+.camera-settings__content form {
+  flex-grow: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  padding: .5rem 0;
+}
+
+.camera-settings__underline {
+  margin: -1rem;
+  border-bottom: 2px solid #888888;
+}
+
+.camera-settings__buttons {
+  padding: .5rem 0;
+  align-self: flex-end;
+}
+
+.camera-settings__buttons button {
+  color: var(--text-color);
+  padding: 0rem .2em;
+  background-color: var(--button-bg-color);
+}
+.camera-settings__buttons button:hover {
+  background-color: var(--button-action-color);
+}
+
+.camera-settings__buttons button:focus {
+  outline: none;
+}
+
+.zone__list {
+  padding: 1rem 0;
+  width:100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  transition: 1.5s;
+  overflow:hidden;
+  margin-bottom: 1rem;
+}
+
+.zone__item {
+  min-width: 100%;
+  min-height: 3.25rem;
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  text-align: center;
+  gap: .5rem;
+  padding:  0 1rem;
+  background-color: var(--button-bg-color);
+  border-radius: 5px;
+  border: 1px solid var(--button-outline-color);
+}
+
+.zone__item:hover {
+  color: #FFFFFF;
+  cursor: pointer;
+  border: 1px solid var(--button-hover-outline-color);
+}
+
+.zone__title {
+  display: flex;
+  justify-content: flex-end;
+  flex-grow: 3;
+}
+
+.zone__icons {
+  display: flex;
+  justify-content: flex-end;
+  gap: .2rem;
+  flex-grow: 1;
+  font-size: var(--icon-size);
+}
+
+.zone__item:hover > .zone__icons {
+  color: var(--text-color);
+}
+
+/* ICONS */
+
+.uil-setting:hover {
+  color: #FFFFFF;
+}
+
+.uil-trash:hover {
+  color: #FFFFFF;
+}
+
+
+

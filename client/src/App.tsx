@@ -1,16 +1,13 @@
 import { useAppDispatch, useAppSelector } from './app/hooks'
-import { addCameraAction } from './store/cameraReducer'
 import { Header } from './components'
 import './styles/main.scss'
 import { BrowserRouter } from 'react-router-dom'
 import CameraAdd from './components/Cameras/CameraAdd'
+import CameraSettingsRouter from './components/AppRouter/CameraSettingsRouter'
 
 function App() {
 
   const addCameraModal = useAppSelector(state => state.addCameraModal.opened)
-  const dispatch = useAppDispatch()
-
-  const currentCamera = useAppSelector(state => state.currentCamera.selectedCamera)
 
   return (
     <div className="App">
@@ -19,9 +16,11 @@ function App() {
         {addCameraModal &&
           <CameraAdd />
         }
-        <main>
-          <div>{currentCamera.name}{currentCamera.link}</div>
+        <main className="content">
         </main>
+        <footer>
+            <CameraSettingsRouter />
+        </footer>
       </BrowserRouter>
     </div >
   )

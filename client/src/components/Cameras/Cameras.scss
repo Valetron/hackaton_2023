@@ -24,14 +24,9 @@
   justify-content: center;
   align-items: center;
   gap: .5rem;
-  padding: 1rem;
   background-color: var(--button-bg-color);
   border-radius: 5px;
   border: 1px solid var(--button-outline-color);
-}
-
-.camera__title {
-  position: relative;
 }
 
 .camera__item:hover {
@@ -39,6 +34,17 @@
   cursor: pointer;
   border: 1px solid var(--button-hover-outline-color);
 }
+
+.camera__item__selected {
+  color: #FFFFFF;
+  background-color: #52B69A;
+  border: 1px solid var(--button-hover-outline-color);
+}
+
+.camera__title {
+  position: relative;
+}
+
 
 .camera__item-icon {
   position: absolute;
@@ -49,8 +55,11 @@
   font-size: calc(var(--icon-size) + .25rem);
 }
 
+.camera__add-item {
+}
+
 .camera__add-item button {
-  color: var(--text-color);
+  color: #FFFFFF;
   min-width: 100%;
   min-height: 3.25rem;
   position: relative;
@@ -58,7 +67,6 @@
   justify-content: center;
   align-items: center;
   gap: .5rem;
-  padding: 1rem;
   background-color: var(--button-action-color);
   border-radius: 5px;
   border: 1px solid var(--button-outline-color);
