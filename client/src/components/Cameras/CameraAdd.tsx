@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Input } from '@chakra-ui/react'
-import { useAppDispatch } from '../../app/hooks'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { openAddCameraModalAction } from '../../store/cameraAddReducer'
 import { addCameraAction } from '../../store/cameraReducer'
 
@@ -34,7 +34,7 @@ export default function CameraAdd() {
     let blink: any
 
     if (onError) {
-       blink = setInterval(() => {
+      blink = setInterval(() => {
         setError(false)
       }, 200)
     }
@@ -62,11 +62,11 @@ export default function CameraAdd() {
         <form className="camera-add__item__form">
           <div>
             <div >Имя</div>
-            <Input 
+            <Input
               maxLength={20}
               placeholder="Название камеры" value={cameraName} onChange={(e) => setCameraName(e.target.value)}
-              _placeholder={{ color: `${onError ? 'red' : ''}`}}
-              />
+              _placeholder={{ color: `${onError ? 'red' : ''}` }}
+            />
           </div>
           <div>
             <div>Ссылка</div>
@@ -77,7 +77,7 @@ export default function CameraAdd() {
           <button
             onClick={closeWindow}
           >Отмена</button>
-          <button 
+          <button
             onClick={() => addCameraHandler(cameraName, cameraLink)}
           >
             Добавить

@@ -1,16 +1,18 @@
 import { FormEvent, useState, useEffect } from 'react'
-import { Input } from '@chakra-ui/react'
+import { Button, Input } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import './CameraSettings.scss'
 import { updateCameraAction } from '../../store/cameraReducer'
 import { updateSelectedCamera } from '../../store/cameraSelectionReducer'
 import { useLocation } from 'react-router-dom'
 import ZonesList from './ZonesList'
+import CameraSettingsButtons from './Buttons'
 
 export default function CameraSettings() {
 
   const [cameraName, setCameraName] = useState<string>('')
   const [cameraLink, setCameraLink] = useState<string>('')
+  const [period, setPeriod] = useState<number>()
   const [onError, setOnError] = useState<boolean>(false)
 
   const itemID = useLocation().pathname.replace(/\D/g, "")
@@ -20,7 +22,7 @@ export default function CameraSettings() {
 
   const dispatch = useAppDispatch()
 
-  const updateCameraInfo = (e: FormEvent,name: string, link: string) => {
+  const updateCameraInfo = (e: FormEvent, name: string, link: string) => {
     e.preventDefault()
 
     if (cameraName === '') {
@@ -34,13 +36,11 @@ export default function CameraSettings() {
     }
 
     const newCameraObject = {
-      id: selectedCamera.id,
+      ...selectedCamera,
       name: name,
       link: link
     }
-    
-    console.log(newCameraObject)
-    
+
     dispatch(updateCameraAction(newCameraObject))
     dispatch(updateSelectedCamera(newCameraObject))
   }
@@ -51,7 +51,7 @@ export default function CameraSettings() {
         if (item.id === Number(itemID)) {
           setCameraName(item.name)
           setCameraLink(item.link)
-          return item.id === Number(itemID)         
+          return item.id === Number(itemID)
         }
       })))
     }
@@ -61,7 +61,7 @@ export default function CameraSettings() {
     let blink: any
 
     if (onError) {
-       blink = setInterval(() => {
+      blink = setInterval(() => {
         setOnError(false)
       }, 200)
     }
@@ -87,36 +87,48 @@ export default function CameraSettings() {
         <form className="camera-settings__form">
           <div>
             <div>Имя</div>
-            <Input 
+            <Input
               maxLength={20}
               placeholder="Название камеры" value={cameraName} onChange={(e) => setCameraName(e.target.value)}
-              _placeholder={{ color: `${onError ? 'red' : ''}`}}
+              _placeholder={{ color: `${onError ? 'red' : ''}` }}
             />
           </div>
           <div>
             <div>Ссылка</div>
             <Input placeholder="Ссылка на камеру" value={cameraLink} onChange={(e) => setCameraLink(e.target.value)} />
           </div>
-        <div className="camera-settings__buttons">
-          <button 
-            type="submit"
-            onClick={(e: FormEvent) => updateCameraInfo(e, cameraName, cameraLink)}
-          >
+            <div>
+            <div>Период обработки</div>
+              <input type="numeric" value={period} onChange={(e) => setPeriod(Number(e.target.value))}/>
+            </div>
+          <div className="camera-settings__buttons">
+            <button
+              type="submit"
+              onClick={(e: FormEvent) => updateCameraInfo(e, cameraName, cameraLink)}
+            >
               Сохранить
-          </button>
-        </div>
+            </button>
+          </div>
         </form>
         <div className="camera-settings__underline"></div>
 
-        <ZonesList />
+        {selectedCamera.areas.length !== 0 &&
+          <>
+            <ZonesList />
+            <div className="camera-settings__underline"></div>
+          </>
+        }
+
+        <CameraSettingsButtons />
+
 
       </div>
     </div>
   )
-  :
-  (
-    <div className="camera-settings__container">
-      <div className="camera-settings__title">Камеры не существует.</div>
-    </div>
-  )
+    :
+    (
+      <div className="camera-settings__container">
+        <div className="camera-settings__title">Камеры не существует.</div>
+      </div>
+    )
 }

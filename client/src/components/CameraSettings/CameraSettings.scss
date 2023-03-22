@@ -3,13 +3,13 @@
   width: 18rem;
   font-size: 0.875rem;
   background-color: var(--container-color); 
-  padding: 1rem;
   font-weight: 700;
   font-size: var(--norma-font-size);
   transition: transform 1s ease-out;
 }
 
 .camera-settings__title {
+  padding: .5rem 0;
   text-align: center;
   font-size: var(--larger-font);
 }
@@ -37,18 +37,20 @@
   display: flex;
   flex-direction: column;
   gap: .5rem;
-  padding: .5rem 0;
+  padding: 0 1rem;
 }
 
 .camera-settings__underline {
-  margin: -1rem;
   border-bottom: 2px solid #888888;
 }
 
 .camera-settings__buttons {
+  display: flex;
+  justify-content: space-between;
   padding: .5rem 0;
   align-self: flex-end;
 }
+
 
 .camera-settings__buttons button {
   color: var(--text-color);
@@ -64,18 +66,32 @@
 }
 
 .zone__list {
-  padding: 1rem 0;
+  max-height: 26rem;
+  padding: 1rem 1rem;
   width:100%;
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
   transition: 1.5s;
-  overflow:hidden;
-  margin-bottom: 1rem;
+  overflow-y: scroll;
+}
+
+.zone__list::-webkit-scrollbar {
+  width: 10px;
+}
+.zone__list::-webkit-scrollbar-track {
+  background-color: var(--container-color);
+}
+
+.zone__list::-webkit-scrollbar-thumb {
+  background-color: var(--body-color);
+  border-radius: 10px;
 }
 
 .zone__item {
+  position: relative;
   min-width: 100%;
   min-height: 3.25rem;
   position: relative;
@@ -84,7 +100,7 @@
   align-items: center;
   text-align: center;
   gap: .5rem;
-  padding:  0 1rem;
+  padding:  0 .5rem;
   background-color: var(--button-bg-color);
   border-radius: 5px;
   border: 1px solid var(--button-outline-color);
@@ -117,12 +133,38 @@
 /* ICONS */
 
 .uil-setting:hover {
-  color: #FFFFFF;
+  color: #FCA311;
 }
 
 .uil-trash:hover {
-  color: #FFFFFF;
+  color: #D00000;
+}
+
+.cameras-settings__buttons {
+  width: 100%;
+  flex-grow: 3;
+  padding: 0rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem
+}
+
+.cameras-settings__button-item {
+  min-width: 100%;
+  min-height: 3.25rem;
+  position: relative;
+  text-align: center;
+  gap: .5rem;
+  padding:  0 1rem;
+  background-color: var(--button-bg-color);
+  border-radius: 5px;
+  border: 1px solid var(--button-outline-color);
+  color: var(--title-color);
 }
 
 
-
+.remove-button {
+  background-color: #9D0208;
+}
