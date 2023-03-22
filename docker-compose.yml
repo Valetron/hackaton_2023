@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  frontend:
+    image: node:current-alpine
+    container_name: frontend
+    network_mode: "host"
+    volumes:
+      - ./client:/frontend
+    working_dir: /frontend
+    entrypoint: ./start.sh 
