@@ -30,11 +30,11 @@ source ~/.bash_profile
 source ~/.profile
 ``` 
 
-2. В директории _server_ выполнить:  
+2. В директории _cpp__ выполнить:  
 
 Выпуск
 ```
-conan install --build=missing -s .  
+conan install --build=missing .  
 ```
 Отладка
 ```
