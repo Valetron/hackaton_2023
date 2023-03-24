@@ -1,7 +1,15 @@
-import { combineReducers, createStore } from "redux";
+import { configureStore } from "@reduxjs/toolkit";
+import { cameraReducer } from "./cameraReducer";
+import { addCameraModal } from "./cameraAddReducer";
+import { currentCamera } from "./cameraSelectionReducer";
 
-const globalReducer = combineReducers({
-  //cameraArray: cameraReducer
+export const store = configureStore({
+  reducer: {
+    cameraArray: cameraReducer,
+    addCameraModal: addCameraModal,
+    currentCamera: currentCamera
+  }
 })
 
-export const store = createStore(globalReducer)
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch
