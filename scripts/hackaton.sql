@@ -1,9 +1,9 @@
 CREATE TABLE IF NOT EXISTS camera
 (
 	id serial PRIMARY KEY,
-	name varchar(24) NOT NULL UNIQUE,
+	name varchar(24) NOT NULL,
 	processing_period int DEFAULT 19,
-	stream varchar(255) NOT NULL UNIQUE,
+	stream varchar(255) NOT NULL,
 	areas text
 );
 
@@ -16,7 +16,6 @@ CREATE TABLE IF NOT EXISTS event
 	photo text NOT NULL,
 	FOREIGN KEY(camera_id) REFERENCES camera(id)
 );
-
 
 CREATE OR REPLACE FUNCTION notify_realtime() 
 	RETURNS trigger as $BODY$
