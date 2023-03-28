@@ -1,24 +1,25 @@
+#include <iostream>
 #include <vector>
 
 struct Point {
     double x;
     double y;
 
-    Point(double x = 0.0, double y = 0.0) : x(x), y(y) {}
+    explicit Point(double x = 0.0, double y = 0.0) : x(x), y(y) {}
 };
 
 class Rectangle {
 public:
     std::vector<Point> vertices;
-    Rectangle(const std::vector<Point>& points){
-        if (points.size()==4){
-            for (Point vertex : points){
-                vertices.push_back(vertex);
-            }
-        }
-        else{
-            throw ("rectangle must contained only 4 points");
-        }
+    //start means the top-left point
+    Rectangle(Point start, const double & width, const double & height){
+        vertices.push_back(start);
+        start.x += width;
+        vertices.push_back(start);
+        start.y -= height;
+        vertices.push_back(start);
+        start.x -= width;
+        vertices.push_back(start);
     }
 };
 
@@ -54,23 +55,33 @@ bool isInside(const Rectangle& rect1, const Rectangle& rect2) {
     return true;
 }
 
-void sendIntersectionResult(const Rectangle& r1, const Rectangle& r2){
+bool sendIntersectionResult(const Rectangle& r1, const Rectangle& r2){
     // If all we are intersecting rectangle or we are in one of them, then throw violation
-    bool result = (isInside(r1, r2) || isInside(r2, r1) ||isIntersect(r1, r2));
-}
-
-void getPoints(std::vector<Point>& points1, std::vector<Point>& points2){
-    //Valera, kak prinimat' eti ebuchie tochki?! Of fucking rectangles?
+    return (isInside(r1, r2) || isInside(r2, r1) ||isIntersect(r1, r2));
 }
 
 int main() {
-    std::vector<Point> points1, points2;
-    getPoints(points1, points2);
+    //examples:
+//    //r1 == r2, but idk, if we need to consider the bound, now it's false
+    Point p1 (5.0, 5.0);
+    Point p2 (5.0, 5.0);
 
-    Rectangle r1(points1);
-    Rectangle r2(points2);
+//    //r1 doesn't intersect r2, but r2 in r1
+//        Point p1 (0.0, 1.0);
+//        Point p2 (0.2, 0.9);
 
-    sendIntersectionResult(r1, r2);
+//    //r1 intersects r2
+//        Point p1 (0.0, 1.0);
+//        Point p2 (0.2, 1.1);
+
+//    //r1 and r2 don't touch each other or in
+//    Point p1 (0.0, 5.0);
+//    Point p2 (5.0, 5.0);
+    double width1 = 1.0, width2 = 1.0, height1 = 1.0, height2 = 1.0;
+    Rectangle r1 (p1, width1, height1);
+    Rectangle r2 (p2, width2, height2);
+
+    std::cout << sendIntersectionResult(r1, r2);
 
     return 0;
 }
