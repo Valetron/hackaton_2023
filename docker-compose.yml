@@ -9,3 +9,15 @@ services:
       - ./client:/frontend
     working_dir: /frontend
     entrypoint: ./start.sh 
+
+  database:
+    image: postgres:14-alpine
+    container_name: database
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./scripts:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_DB=hackaton
+      - POSTGRES_PASSWORD=password
+
