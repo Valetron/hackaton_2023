@@ -34,9 +34,9 @@ source ~/.profile
 
 Выпуск
 ```
-conan install --build=missing .  
+conan install -if cmake --build=missing .  
 ```
 Отладка
 ```
-conan install --build=missing -s build_type=Debug .
+conan install -if cmake --build=missing -s build_type=Debug .
 ```
