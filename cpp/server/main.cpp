@@ -1,14 +1,14 @@
 #include <iostream>
 
-//#include "db_worker.h"
+#include "db_worker.h"
 #include "config_parser.h"
 
 int main(int argc, char** argv)
 {
     try
     {
-        std::clog << readConfigFile(argv[1]) << "\n";
-// TODO: connect to db
+        auto credentials = readConfigFile(argv[1]);
+        auto database = DBWorker(credentials);
     }
     catch (const std::exception& e)
     {
