@@ -22,7 +22,7 @@ add_subdirectory(utils/)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(CMAKE_VERBOSE_MAKEFILE on)
-    message(STATUS "Libpqxx headers - ${libpqxx_INCLUDE_DIRS}")
+    message(STATUS "Libpqxx headers - ${libpqxx_INCLUDE_DIR}")
     message(STATUS "Libpqxx library - libpqxx::libpqxx  ")
     message(STATUS "OpenCV headers - ${opencv_INCLUDE_DIRS}")
     message(STATUS "OpenCV library - ${opencv_LIBS}")

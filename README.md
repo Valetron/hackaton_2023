@@ -21,7 +21,19 @@ docker-compose down
 pip3 install --force-reinstall -v conan==1.59.0
 
 ```
-Если выводится ошибка при запуске открыть новый эмулятор терминала или выполнить:
+
+2. В директории _cpp_ выполнить:  
+
+Выпуск
+```
+conan install -if cmake --build=missing -s compiler.libcxx=libstdc++11 .  
+```
+Отладка
+```
+conan install -if cmake --build=missing -s build_type=Debug -s compiler.libcxx=libstdc++11 .
+```
+
+Если выводится ошибка при запуске, выполнить:
 ```
 source ~/.bash_profile
 ```
@@ -29,14 +41,3 @@ source ~/.bash_profile
 ```
 source ~/.profile
 ``` 
-
-2. В директории _cpp_ выполнить:  
-
-Выпуск
-```
-conan install -if cmake --build=missing .  
-```
-Отладка
-```
-conan install -if cmake --build=missing -s build_type=Debug .
-```

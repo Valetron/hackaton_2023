@@ -8,7 +8,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${ROOT_DIR}/utils)
 
 find_package(PostgreSQL REQUIRED)
-find_package(libpqxx REQUIRED
+find_package(libpqxx REQUIRED)
 
 file(GLOB SOURCES "src/*.cpp")
 file(GLOB HEADERS "include/*.h")
