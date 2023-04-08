@@ -1,6 +1,7 @@
 import { useAppSelector } from './app/hooks'
-import { Canvas, Header } from './components'
+import { Header } from './components'
 import './styles/main.scss'
+import CanvasSelection from './components/CanvasSelection/CanvasSelection'
 import { BrowserRouter } from 'react-router-dom'
 import CameraAdd from './components/Cameras/CameraAdd'
 import CameraSettingsRouter from './components/AppRouter/CameraSettingsRouter'
@@ -17,7 +18,7 @@ function App() {
           <CameraAdd />
         }
         <main className="content">
-          <Canvas />
+          <CanvasSelection />
         </main>
         <footer>
           <CameraSettingsRouter />
