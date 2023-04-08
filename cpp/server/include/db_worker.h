@@ -19,16 +19,42 @@ static const std::map<std::string, std::string> PREPARED_STATEMENTS
 };
 }
 
+class NotificationListener : public pqxx::notification_receiver
+{
+public:
+    NotificationListener(pqxx::connection_base& connection, const std::string& channel)
+                        : pqxx::notification_receiver(connection, channel)
+    {
+//        std::clog << "Receiver constructor" << "\n";
+    }
+
+    virtual void operator()(const std::string& payload, int pid) override
+    {
+        _data = payload;
+//        std::clog << "Receiver - " << payload << "\n";
+    }
+
+    const std::string& getData()
+    {
+        return _data;
+    }
+
+private:
+    std::string _data{""};
+};
+
 class DBWorker final
 {
 public:
     DBWorker(const std::string& dataBaseCredentials);
     std::string getData(const std::string& tableName, const int id);
     void setData(const std::string& tableName, const std::string& rawData);
+    void run();
 
 private:
     void checkConnection(const std::string& dataBaseCredentials);
 
 private:
-    std::unique_ptr<pqxx::connection> _connection;
+    std::unique_ptr<pqxx::connection>       _connection;
+    std::unique_ptr<NotificationListener>   _notifyListener;
 };

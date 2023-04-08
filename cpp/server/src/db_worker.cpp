@@ -15,7 +15,10 @@ void DBWorker::checkConnection(const std::string& dataBaseCredentials)
 
     for (const auto& [name, query] : PREPARED_STATEMENTS)
         _connection->prepare(name, query);
+
+    _notifyListener = std::make_unique<NotificationListener>(*_connection, "new_notify"); // TODO: поменять название на понятное в скрипте
 }
+// insert into event (camera_id, description, photo) VALUES(1, '222', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'));
 
 std::string DBWorker::getData(const std::string& tableName, const int id)
 {
@@ -35,4 +38,10 @@ std::string DBWorker::getData(const std::string& tableName, const int id)
         return std::string();
 
     return pqxx::to_string(res.at(0).at(0));
+}
+
+void DBWorker::run()
+{
+    _connection->await_notification();
+    std::clog << _notifyListener->getData() << "\n";
 }
