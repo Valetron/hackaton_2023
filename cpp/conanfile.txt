@@ -2,18 +2,16 @@
 nlohmann_json/3.11.0
 #opencv/4.5.2
 #tensorflow-lite/2.9.1
-libpqxx/7.4.2
-#libpq/14.5
-#cpuinfo/cci.20201217
-#libwebp/1.3.0
-#xz_utils/5.4.0
-#eigen/3.4.0
+libpqxx/7.7.0
+websocketpp/0.8.2
 
 [generators]
 cmake_find_package
 cmake_paths
 
 [options]
+websocketpp:with_openssl=False
+websocketpp:asio=standalone
 #opencv:shared=True
 #opencv:parallel=openmp
 opencv:with_gtk=False
