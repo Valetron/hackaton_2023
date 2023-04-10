@@ -46,10 +46,12 @@ private:
 class DBWorker final
 {
 public:
+    DBWorker() = default;
     DBWorker(const std::string& dataBaseCredentials);
     std::string getData(const std::string& tableName, const int id);
     void setData(const std::string& tableName, const std::string& rawData);
     void run();
+    void getEvent();
 
 private:
     void checkConnection(const std::string& dataBaseCredentials);

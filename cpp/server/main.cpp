@@ -1,8 +1,9 @@
 #include <iostream>
+#include <cstdlib>
 
 #include <pqxx/pqxx>
 
-#include "db_worker.h"
+#include "server.h"
 #include "websocket.h"
 #include "config_parser.h"
 
@@ -11,17 +12,20 @@ int main(int argc, char** argv)
 {
     try
     {
-        if (argc < 2)
-            throw std::invalid_argument("No config file");
+        if (argc < 3)
+        {
+            std::clog << "Usage: ./server database.cfg port\n";
+            std::exit(EXIT_FAILURE);
+        }
 
         auto credentials = readConfigFile(argv[1]);
-        auto database = DBWorker(credentials);
-        auto webSocketServer = WebSocketServer();
+        int port = std::atoi(argv[2]);
+
+        Server server(credentials, port);
 
         while(true)
         {
-            database.run();
-            webSocketServer.run();
+            server.run();
         }
 
     }
@@ -32,3 +36,6 @@ int main(int argc, char** argv)
 
     return 0;
 }
+
+
+// insert into event (camera_id, description, photo) VALUES(1, '222', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'));
