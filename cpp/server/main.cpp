@@ -4,7 +4,6 @@
 #include <pqxx/pqxx>
 
 #include "server.h"
-#include "websocket.h"
 #include "config_parser.h"
 
 

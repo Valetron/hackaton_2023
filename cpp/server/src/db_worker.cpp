@@ -47,7 +47,7 @@ void DBWorker::run()
 
 void DBWorker::getEvent()
 {
-    if (_connection->get_notifs() > 0)
+    if (_connection->await_notification() > 0)
         std::clog << _notifyListener->getData() << "\n";
 }
 
@@ -70,7 +70,7 @@ void DBWorker::getEvent()
  * std::vector<pqxx::notification> notifications = conn.get_notifs();
  * for (const auto& N : notifications)
  * {
- * Handle each received notification
+ *     foo();
  * }
  *
  *
@@ -85,7 +85,7 @@ void DBWorker::getEvent()
  *   pqxx::notification const* N = conn.await_notification();
  *   if (N)
  *   {
- *      // Handle the received notification
+ *      foo();
  *   }
  * }
- * /
+ */
