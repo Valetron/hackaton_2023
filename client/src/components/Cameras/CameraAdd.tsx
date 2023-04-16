@@ -1,18 +1,14 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Input } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { openAddCameraModalAction } from '../../store/cameraAddReducer'
-import { addCameraAction, CamerasObjectArray } from '../../store/cameraReducer'
-import { webSocketUrl } from '../../web-socket'
+import { addCameraAction } from '../../store/cameraReducer'
 
 export default function CameraAdd() {
 
   const [cameraName, setCameraName] = useState<string>('')
   const [cameraLink, setCameraLink] = useState<string>('')
-  const [cameraProcessDelay, setCameraProcessDelay] = useState<number>(5)
   const [onError, setError] = useState<boolean>(false)
-
-  const ws: any = useRef(null)
 
   const dispatch = useAppDispatch()
 
@@ -27,27 +23,10 @@ export default function CameraAdd() {
       return
     }
 
-    const newCamera = {
-      name: cameraName,
-      processDelay: cameraProcessDelay,
-      link: cameraLink
-    }
-
     dispatch(addCameraAction({
       name: name,
       link: link
     }))
-
-    ws.send(newCamera)
-
-    ws.onmessage('newCamera', (message: any) => {
-      const newCameraObject = JSON.parse(message)
-      dispatch(addCameraAction({
-        newCameraObject
-      }))
-    })
-
-
     closeWindow()
   }
 
@@ -68,13 +47,6 @@ export default function CameraAdd() {
 
   useEffect(() => {
     blinkingPlaceholder()
-
-    ws.current = new WebSocket(webSocketUrl)
-    if (ws.current !== null) {
-      ws.current.onopen = () => { console.log("Подключено") }
-    }
-
-
   }, [onError])
 
 
@@ -99,10 +71,6 @@ export default function CameraAdd() {
           <div>
             <div>Ссылка</div>
             <Input placeholder="Ссылка на камеру" value={cameraLink} onChange={(e) => setCameraLink(e.target.value)} />
-          </div>
-          <div>
-            <div>Интервал обработки</div>
-            <Input placeholder={`По умолчанию ${cameraProcessDelay}`} value={cameraProcessDelay} onChange={(e) => setCameraProcessDelay(Number(e.target.value))} />
           </div>
         </form>
         <div className="camera-add__item__buttons">
