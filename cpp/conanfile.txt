@@ -1,6 +1,6 @@
 [requires]
 nlohmann_json/3.11.0
-opencv/4.5.2
+#opencv/4.5.2 # на Arch не работает
 #tensorflow-lite/2.9.1
 libpqxx/7.7.0
 websocketpp/0.8.2

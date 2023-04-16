@@ -7,8 +7,13 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${ROOT_DIR}/utils)
 
-#if (not ${})
-find_package(opencv REQUIRED)
+if(${OpenCV_DIR})
+    set(OpenCV_DIR ${OpenCV_DIR})
+else()
+    find_package(OpenCV REQUIRED)
+endif()
+
+
 
 file(GLOB SOURCES "src/*.cpp")
 file(GLOB HEADERS "include/*.h")
@@ -28,6 +33,8 @@ target_include_directories(${PROJECT_NAME}
                            PUBLIC
                            )
 
+
+
 target_link_libraries(${PROJECT_NAME}
                       PUBLIC
-                      )
+                      ${OpenCV_LIBS})
