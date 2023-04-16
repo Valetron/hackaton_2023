@@ -20,4 +20,5 @@ void Server::initWebsocket(const int wsPort)
 void Server::run()
 {
     _database.getEvent();
+//    _ws->
 }

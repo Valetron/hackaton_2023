@@ -1,3 +1,5 @@
+#include <nlohmann/json.hpp>
+
 #include "websocket.h"
 
 WebSocketServer::WebSocketServer(int port)
@@ -82,6 +84,11 @@ void WebSocketServer::sendData(conn_hdl hdl, msg_ptr msg)
     std::clog << "on_message called with hdl: " << hdl.lock().get()
               << " and message: " << msg->get_payload() << "\n";
 
-    _endpoint.send(hdl, msg->get_payload(), msg->get_opcode());
+    auto res = msg->get_payload();
+    auto data = nlohmann::json::parse(res);
+
+    return data;
+
+//    _endpoint.send(hdl, msg->get_payload(), msg->get_opcode());
 
 }
