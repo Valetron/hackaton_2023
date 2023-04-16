@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import { removeCameraAction } from "../../store/cameraReducer"
+import { removeCameraAction, updateCameraAction } from "../../store/cameraReducer"
 import { updateSelectedCamera } from "../../store/cameraSelectionReducer"
 
 
@@ -11,14 +11,26 @@ export default function CameraSettingsButtons() {
   const dispatch = useAppDispatch()
 
 
-  const addNewZoneHandler = () => {
+  const addNewAreaHandler = () => {
 
+    const newArea = {
+
+    }
+
+    const newCamera = {
+      ...selectedCamera,
+      areas: [
+        ...selectedCamera.areas,
+
+      ]
+    }
+
+    dispatch(updateCameraAction({}))
   }
 
   const deleteCameraHandler = () => {
     dispatch(removeCameraAction(selectedCamera.id))
     dispatch(updateSelectedCamera({}))
-
   }
 
   return (

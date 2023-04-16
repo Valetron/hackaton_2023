@@ -13,6 +13,7 @@ export interface CamerasObjectArray {
   name: string
   areas: Array<CamerasAreas>
   link: string
+  openedCanvas: boolean
 }
 
 const initialState = {
@@ -94,16 +95,17 @@ const initialState = {
               { x: 4, y: 4 }
             ]
           },
-
         ]
       ],
-      link: 'none'
+      link: 'none',
+      openedCanvas: true
     },
     {
       id: 2,
       name: 'Cam2',
       areas: [],
-      link: 'none'
+      link: 'none',
+      openedCanvas: false
     }
   ]
 }

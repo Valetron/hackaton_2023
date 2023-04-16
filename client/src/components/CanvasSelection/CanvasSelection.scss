@@ -1,0 +1,23 @@
+#canvas {
+  height: 600px;
+  z-index: 2020;
+  position: fixed;
+
+}
+
+.canvas__button-div {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.canvas__button-item {
+  text-align: center;
+  background-color: var(--button-bg-color);
+  border-radius: 5px;
+  border: 1px solid var(--button-outline-color);
+  color: var(--title-color);
+}
