@@ -29,8 +29,8 @@ CREATE TABLE IF NOT EXISTS trace_point
 CREATE OR REPLACE FUNCTION notify_realtime() 
 	RETURNS trigger as $BODY$
 		BEGIN
-		PERFORM pg_notify('add_event',(NEW.description,';', NEW.time_stamp,';',
-			(SELECT c.name FROM camera c WHERE NEW.camera_id = c.id),';', NEW.photo)::varchar);
+		PERFORM pg_notify('add_event',(NEW.description, NEW.time_stamp,
+			(SELECT c.name FROM camera c WHERE NEW.camera_id = c.id), NEW.photo)::varchar);
 		RETURN NULL;
 		END;
 	$BODY$
