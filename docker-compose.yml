@@ -4,6 +4,7 @@ services:
   frontend:
     image: node:current-alpine
     container_name: frontend
+    restart: always
     network_mode: "host"
     volumes:
       - ./client:/frontend
@@ -13,6 +14,7 @@ services:
   database:
     image: postgres:14-alpine
     container_name: database
+    restart: always
     ports:
       - "5432:5432"
     volumes:
