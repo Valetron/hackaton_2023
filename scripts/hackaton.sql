@@ -17,10 +17,19 @@ CREATE TABLE IF NOT EXISTS event
 	FOREIGN KEY(camera_id) REFERENCES camera(id)
 );
 
+CREATE TABLE IF NOT EXISTS trace_point
+(
+	id serial PRIMARY KEY,
+	camera_id int NOT NULL,
+	x int NOT NULL,
+	y int NOT NULL,
+	FOREIGN KEY(camera_id) REFERENCES camera(id)
+);
+
 CREATE OR REPLACE FUNCTION notify_realtime() 
 	RETURNS trigger as $BODY$
 		BEGIN
-		PERFORM pg_notify('new_notify',(NEW.description,';', NEW.time_stamp,';',
+		PERFORM pg_notify('add_event',(NEW.description,';', NEW.time_stamp,';',
 			(SELECT c.name FROM camera c WHERE NEW.camera_id = c.id),';', NEW.photo)::varchar);
 		RETURN NULL;
 		END;
