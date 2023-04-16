@@ -22,80 +22,15 @@ const initialState = {
       id: 1,
       name: 'Cam1',
       areas: [
-        [
           {
             name: "Area1",
             points: [
-              { x: 1, y: 1 },
-              { x: 2, y: 2 },
-              { x: 3, y: 3 },
-              { x: 4, y: 4 }
+              { x: 100, y: 100 },
+              { x: 200, y: 200 },
+              { x: 300, y: 300 },
+              { x: 400, y: 400 }
             ]
           },
-          {
-            name: "Area2",
-            points: [
-              { x: 1, y: 1 },
-              { x: 2, y: 2 },
-              { x: 3, y: 3 },
-              { x: 4, y: 4 }
-            ]
-          },
-          {
-            name: "Area1",
-            points: [
-              { x: 1, y: 1 },
-              { x: 2, y: 2 },
-              { x: 3, y: 3 },
-              { x: 4, y: 4 }
-            ]
-          },
-          {
-            name: "Area1",
-            points: [
-              { x: 1, y: 1 },
-              { x: 2, y: 2 },
-              { x: 3, y: 3 },
-              { x: 4, y: 4 }
-            ]
-          },
-          {
-            name: "Area1",
-            points: [
-              { x: 1, y: 1 },
-              { x: 2, y: 2 },
-              { x: 3, y: 3 },
-              { x: 4, y: 4 }
-            ]
-          },
-          {
-            name: "Area1",
-            points: [
-              { x: 1, y: 1 },
-              { x: 2, y: 2 },
-              { x: 3, y: 3 },
-              { x: 4, y: 4 }
-            ]
-          },
-          {
-            name: "Area1",
-            points: [
-              { x: 1, y: 1 },
-              { x: 2, y: 2 },
-              { x: 3, y: 3 },
-              { x: 4, y: 4 }
-            ]
-          },
-          {
-            name: "Area1",
-            points: [
-              { x: 1, y: 1 },
-              { x: 2, y: 2 },
-              { x: 3, y: 3 },
-              { x: 4, y: 4 }
-            ]
-          },
-        ]
       ],
       link: 'none',
       openedCanvas: true

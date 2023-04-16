@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { updateCameraAction } from '../../store/cameraReducer'
-import { updateSelectedCamera } from '../../store/cameraSelectionReducer'
+import { currentCamera, updateSelectedCamera } from '../../store/cameraSelectionReducer'
 import './CanvasSelection.scss'
 
 const CanvasSelection = () => {
@@ -19,6 +19,7 @@ const CanvasSelection = () => {
   const [shapesList, setShapesList] = useState<Array<any>>([])
 
   const [endSelection, setEndSelection] = useState<boolean>(false)
+  const [startLoading, setStartLoading] = useState<boolean>(false)
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const ctxRef = useRef(canvasRef.current?.getContext('2d'))
@@ -145,12 +146,14 @@ const CanvasSelection = () => {
     }
 
     // Draw lines between current points
-    for (let i = 0; i < currentPoints.length - 1; ++i) {
-      ctx.strokeStyle = 'red'
-      ctx.lineWidth = 5
-      ctxRef.current.moveTo(currentPoints[i].x, currentPoints[i].y)
-      ctxRef.current.lineTo(currentPoints[i + 1].x, currentPoints[i + 1].y)
-      ctxRef.current.stroke()
+    if (currentPoints.length > 0) {
+      for (let i = 0; i < currentPoints.length - 1; ++i) {
+        ctx.strokeStyle = 'red'
+        ctx.lineWidth = 5
+        ctxRef.current.moveTo(currentPoints[i].x, currentPoints[i].y)
+        ctxRef.current.lineTo(currentPoints[i + 1].x, currentPoints[i + 1].y)
+        ctxRef.current.stroke()
+      }
     }
 
     // Draw start connection point
@@ -168,6 +171,7 @@ const CanvasSelection = () => {
   const clientWidthRef = useRef(window.innerWidth)
 
   useEffect(() => {
+
     if (canvasRef.current == null) return;
     canvasRef.current.onmousedown = mouseDown
     canvasRef.current.onmouseup = mouseUp
@@ -177,29 +181,45 @@ const CanvasSelection = () => {
     if (ctxRef.current == null) return;
     ctxRef.current.clearRect(1, 1, canvasRef.current.width, canvasRef.current.height)
     ctxRef.current.beginPath()
+
+
+    setStartLoading(true)
+
+    let shapesPoints: any = []
+    for (let i = 0; i < selectedCamera.areas.length - 1; ++i) {
+      shapesPoints.push(selectedCamera.areas[i].points)
+    }
+
+    setShapesList(shapesPoints)
+
     draw_shapes(ctxRef.current)
-  }, [shapesList, endSelection])
+
+  }, [startLoading, endSelection])
 
   // add zone callback
 
   const addArea = () => {
+
     const newArea =
     {
       name: "newZone",
-      points: currentPoints
+      points: shapesList[shapesList.length - 1]
     }
 
     const cameraWithNewArea = {
       ...selectedCamera,
       areas: [
-        ...selectedCamera.areas,
-      ]
+        ...selectedCamera.areas, 
+        newArea
+      ] 
     }
 
     dispatch(updateCameraAction(cameraWithNewArea))
     dispatch(updateSelectedCamera(cameraWithNewArea))
 
     currentPoints = []
+
+    setEndSelection(false)
   }
 
   const cancelAreaAdding = () => {
@@ -210,7 +230,7 @@ const CanvasSelection = () => {
 
   return (
     <>
-      <canvas ref={canvasRef} id="canvas" width={clientWidthRef.current * 0.55} height={600} className={`h-[600px] z-[2020] fixed top-[50%] translate-y-[-50%]`} />
+      <canvas ref={canvasRef} id="canvas" width={clientWidthRef.current * 0.55} height={600}  />  
       { endSelection &&
        <div className="canvas__button-div">
          <h2>Добавить зону с текущим рисунком?</h2>
@@ -281,3 +301,7 @@ const euklidDistance = (x: number, x0: number, x1: number, y: number, y0: number
   return (x - x0) * (y1 - y0) - (y - y0) * (x1 - x0)
 }
 */
+
+
+// TODO: 133 .length = undefined... Сформировать для каждой зоны отельный массив точек, + имя еще можно дописать будет круто для селекшина в итоге
+// TODO: сделать сброс, поправить отрисовку
