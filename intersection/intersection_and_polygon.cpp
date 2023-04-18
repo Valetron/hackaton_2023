@@ -6,34 +6,26 @@
 const double alarm_value = 0.45;
 
 struct Point {
-public:
     double x, y;
 
-    Point() {
-        this->x = 0.0;
-        this->y = 0.0;
-    }
+    explicit Point() = default;
 
-    Point(double x, double y) {
-        this->x = x;
-        this->y = y;
-    }
+    Point(double xx, double yy) : x{xx}, y{yy} {}
 };
 
 struct Segment {
-    Point p1, p2;
+    Point p1{}, p2{};
 
-    Segment(Point p1, Point p2) {
+    explicit Segment(Point p1, Point p2) {
         this->p1 = p1;
         this->p2 = p2;
     }
 };
 
 struct Polygon {
-public:
     std::vector<Segment> sides;
 
-    Polygon(std::vector<Segment> &sides) {
+    explicit Polygon(std::vector<Segment> &sides) {
         for (Segment seg: sides) {
             this->sides.emplace_back(seg);
         }
@@ -41,7 +33,7 @@ public:
 };
 
 bool rayIntersectsSegment(Point pt, Segment seg) {
-    Point a, b;
+    Point a{}, b{};
     if (seg.p1.y < seg.p2.y) {
         a = seg.p1;
         b = seg.p2;
@@ -123,23 +115,12 @@ double polygon_area(std::vector<Point> &points) {
 }
 
 void sort_vertices(std::vector<Point> &intersect_f_p) {
-    double min_x_y = std::numeric_limits<double>::max(), x_min_y = std::numeric_limits<double>::max();
-    double max_x_y = std::numeric_limits<double>::min(), x_max_y = std::numeric_limits<double>::min();
-    for (auto p: intersect_f_p) {
-        if (p.x > max_x_y) {
-            max_x_y = p.x;
-        }
-        if (p.y > x_max_y) {
-            x_max_y = p.y;
-        }
-        if (p.x < min_x_y) {
-            min_x_y = p.x;
-        }
-        if (p.y < x_min_y) {
-            x_min_y = p.y;
-        }
-    }
-    Point left_bottom_p(min_x_y, x_min_y), right_top_p(max_x_y, x_max_y);
+    const auto [x_min, x_max] = std::minmax_element(intersect_f_p.begin(), intersect_f_p.end(),
+                                                    [](const auto &a, const auto &b) { return a.x < b.x; });
+    const auto [y_min, y_max] = std::minmax_element(intersect_f_p.begin(), intersect_f_p.end(),
+                                                    [](const auto &a, const auto &b) { return a.y < b.y; });
+
+    Point left_bottom_p(x_min->x, y_min->y), right_top_p(x_max->x, y_max->y);
     Point c(right_top_p.x - (right_top_p.x - left_bottom_p.x) / 2,
             right_top_p.y - (right_top_p.y - left_bottom_p.y) / 2);
 
@@ -148,18 +129,17 @@ void sort_vertices(std::vector<Point> &intersect_f_p) {
         auto bv = std::atan2(b.y - c.y, b.x - c.x);
 
         if (std::abs(av - bv) < std::numeric_limits<double>::epsilon()) {
-            double lena = sqrt(pow(a.x - c.x, 2) + pow(a.y - c.y, 2));
-            double lenb = sqrt(pow(b.x - c.x, 2) + pow(b.y - c.y, 2));
+            double lena = std::sqrt((a.x - c.x, 2) * (a.x - c.x, 2) + (a.y - c.y, 2) * (a.y - c.y, 2));
+            double lenb = std::sqrt((b.x - c.x, 2) * (b.x - c.x, 2) + (b.y - c.y, 2) * (b.y - c.y, 2));
             return lena < lenb;
         }
-
         return av < bv;
     });
 }
 
 bool is_worker_in_zone(Polygon &zone, Polygon &entity_in_zone) {
     std::vector<Point> intersect_f_p;
-    Point figure_point;
+    Point figure_point{};
     for (auto entity_seg: entity_in_zone.sides) {
         //add rectangle points inside the zone
         if (is_point_inside_polygon(entity_seg.p1, zone)) {
