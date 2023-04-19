@@ -176,6 +176,7 @@ bool is_worker_in_zone(Polygon &zone, Polygon &entity_in_zone) {
 }
 
 int main() {
+    //
 //    double x1, y1, x2, y2, x3, y3, x4, y4;
 //    std::cout << "seg1: ";
 //    std::cin >> x1 >> y1 >> x2 >> y2;
