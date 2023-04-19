@@ -152,13 +152,18 @@ bool is_worker_in_zone(Polygon &zone, Polygon &entity_in_zone) {
             }
         }
     }
+    bool is_entity_outside = true;
     //add zone points inside a rectangle
     for (auto zone_seg: zone.sides) {
         if (is_point_inside_polygon(zone_seg.p1, entity_in_zone)) {
             intersect_f_p.emplace_back(zone_seg.p1);
+            is_entity_outside = false;
         }
     }
     if (intersect_f_p.empty()) {
+        if (is_entity_outside){
+            return false;
+        }
         return true;
     }
 
@@ -196,11 +201,13 @@ int main() {
 
     //zone example
     std::vector<Segment> segs_zone;
-    segs_zone.emplace_back(Point(0, 3), Point(3, 0));
-    segs_zone.emplace_back(Point(3, 0), Point(8, 2));
-    segs_zone.emplace_back(Point(8, 2), Point(6, 4));
-    segs_zone.emplace_back(Point(6, 4), Point(3, 6));
-    segs_zone.emplace_back(Point(3, 6), Point(0, 3));
+    segs_zone.emplace_back(Point(5,27), Point(2,13));
+    segs_zone.emplace_back(Point(2,13), Point(13, 1));
+    segs_zone.emplace_back(Point(13, 1), Point(41, 2));
+    segs_zone.emplace_back(Point(41, 2), Point(53, 16));
+    segs_zone.emplace_back(Point(53, 16), Point(24, 13));
+    segs_zone.emplace_back(Point(24, 13), Point(15,28));
+    segs_zone.emplace_back(Point(15,28), Point(5,27));
     Polygon zone(segs_zone);
 
     //test for is_point_inside_polygon
@@ -210,12 +217,12 @@ int main() {
 //    else
 //        std::cout << "Point is NOT in polygon\n";
 
-    //worker example
+    //worker example Den
     std::vector<Segment> segs_worker;
-    segs_worker.emplace_back(Point(4, 4), Point(6, 4));
-    segs_worker.emplace_back(Point(6, 4), Point(6, 1));
-    segs_worker.emplace_back(Point(6, 1), Point(4, 1));
-    segs_worker.emplace_back(Point(4, 1), Point(4, 4));
+    segs_worker.emplace_back(Point(35, 10), Point(40, 10));
+    segs_worker.emplace_back(Point(40, 10), Point(40, 20));
+    segs_worker.emplace_back(Point(40, 20), Point(35, 20));
+    segs_worker.emplace_back(Point(35, 20), Point(35, 10));
     Polygon worker(segs_worker);
     if (is_worker_in_zone(zone, worker))
         std::cout << "Entity on place\n";
