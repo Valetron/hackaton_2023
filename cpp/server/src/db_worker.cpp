@@ -39,15 +39,15 @@ std::string DBWorker::getData(const std::string& tableName, const int id)
     return pqxx::to_string(res.at(0).at(0));
 }
 
-void DBWorker::run()
-{
-    _connection->await_notification();
-    std::clog << _notifyListener->getData() << "\n";
-}
+//void DBWorker::run()
+//{
+//    _connection->await_notification();
+//    std::clog << _notifyListener->getData() << "\n";
+//}
 
 void DBWorker::getEvent()
 {
-    if (_connection->await_notification() > 0)
+    if (_connection->get_notifs() > 0)
         std::clog << _notifyListener->getData() << "\n";
 }
 

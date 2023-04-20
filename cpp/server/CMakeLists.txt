@@ -9,7 +9,8 @@ include_directories(${ROOT_DIR}/utils)
 
 find_package(PostgreSQL REQUIRED)
 find_package(libpqxx REQUIRED)
-find_package(websocketpp REQUIRED)
+#find_package(websocketpp REQUIRED)
+find_package(Crow REQUIRED)
 find_package(nlohmann_json REQUIRED)
 
 file(GLOB SOURCES "src/*.cpp")
@@ -26,7 +27,9 @@ target_include_directories(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
                       PUBLIC
-                      websocketpp::websocketpp
+#                      websocketpp::websocketpp
+                      Crow::Crow
                       PostgreSQL::PostgreSQL
                       libpqxx::libpqxx
-                      nlohmann_json::nlohmann_json)
+                      nlohmann_json::nlohmann_json
+                     )

@@ -25,13 +25,13 @@ public:
     NotificationListener(pqxx::connection_base& connection, const std::string& channel)
                         : pqxx::notification_receiver(connection, channel)
     {
-//        std::clog << "Receiver constructor" << "\n";
+        std::clog << "o4k0\n";
     }
 
     virtual void operator()(const std::string& payload, int pid) override
     {
         _data = payload;
-//        std::clog << "Receiver - " << payload << "\n";
+        std::clog << "Receiver - " << payload << "\n";
     }
 
     const std::string& getData()

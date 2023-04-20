@@ -4,16 +4,18 @@
 #include <fstream>
 #include <sstream>
 
-#include <websocketpp/server.hpp>
-#include <websocketpp/config/asio_no_tls.hpp>
+#include <crow.h>
 
-using websocketpp::lib::bind;
-using websocketpp::lib::placeholders::_1;
-using websocketpp::lib::placeholders::_2;
-using msg_ptr = websocketpp::server<websocketpp::config::asio>::message_ptr;
-using conn_hdl = websocketpp::connection_hdl;
-using server = websocketpp::server<websocketpp::config::asio>;
-using con_list = std::set<conn_hdl,std::owner_less<conn_hdl>>;
+//#include <websocketpp/server.hpp>
+//#include <websocketpp/config/asio_no_tls.hpp>
+
+//using websocketpp::lib::bind;
+//using websocketpp::lib::placeholders::_1;
+//using websocketpp::lib::placeholders::_2;
+//using msg_ptr = websocketpp::server<websocketpp::config::asio>::message_ptr;
+//using conn_hdl = websocketpp::connection_hdl;
+//using server = websocketpp::server<websocketpp::config::asio>;
+//using con_list = std::set<conn_hdl,std::owner_less<conn_hdl>>;
 
 class WebSocketServer final
 {
@@ -23,12 +25,13 @@ public:
 
 private:
     void init();
-    void onOpen(conn_hdl hdl);
-    void onClose(conn_hdl hdl);
-    void onHttp(conn_hdl hdl);
-    void sendData(conn_hdl hdl, msg_ptr msg);
+//    void onOpen(conn_hdl hdl);
+//    void onClose(conn_hdl hdl);
+//    void onHttp(conn_hdl hdl);
+//    void sendData(conn_hdl hdl, msg_ptr msg);
 
 private:
-    server _endpoint;
-    con_list _clients;
+    crow::SimpleApp _app;
+//    server _endpoint;
+//    con_list _clients;
 };

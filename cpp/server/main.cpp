@@ -22,10 +22,10 @@ int main(int argc, char** argv)
 
         Server server(credentials, port);
 
-        while(true)
-        {
-            server.run();
-        }
+        server.run();
+//        while(true)
+//        {
+//        }
 
     }
     catch (const std::exception& e)

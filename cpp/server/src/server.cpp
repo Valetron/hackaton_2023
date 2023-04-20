@@ -2,7 +2,7 @@
 
 Server::Server(const std::string& dbConfig, const int serverPort)
 {
-    initDataBase(dbConfig);
+//    initDataBase(dbConfig);
     initWebsocket(serverPort);
 }
 
