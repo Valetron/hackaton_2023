@@ -106,6 +106,7 @@
   height: 14rem; 
   background-color: var(--container-color);
   border-radius: 10px;
+  z-index: 2023;
 
   &__title {
    color: var(--title-color);

@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import { updateCameraAction } from '../../store/cameraReducer'
-import { currentCamera, updateSelectedCamera } from '../../store/cameraSelectionReducer'
+import { updateCamera } from '../../store/Reducers/cameraReducer'
+import { updateSelectedCamera } from '../../store/Reducers/cameraSelectionReducer'
 import './CanvasSelection.scss'
 
 const CanvasSelection = () => {
@@ -31,7 +31,7 @@ const CanvasSelection = () => {
   let startX: number;
   let startY: number;
   let mouseX: number;
-  let mouseY: number; 
+  let mouseY: number;
 
   const mouseDown = function(event: MouseEvent) {
     const canvBounds: any = canvasRef.current?.getBoundingClientRect();
@@ -209,12 +209,12 @@ const CanvasSelection = () => {
     const cameraWithNewArea = {
       ...selectedCamera,
       areas: [
-        ...selectedCamera.areas, 
+        ...selectedCamera.areas,
         newArea
-      ] 
+      ]
     }
 
-    dispatch(updateCameraAction(cameraWithNewArea))
+    dispatch(updateCamera(cameraWithNewArea))
     dispatch(updateSelectedCamera(cameraWithNewArea))
 
     currentPoints = []
@@ -230,13 +230,13 @@ const CanvasSelection = () => {
 
   return (
     <>
-      <canvas ref={canvasRef} id="canvas" width={clientWidthRef.current * 0.55} height={600}  />  
-      { endSelection &&
-       <div className="canvas__button-div">
-         <h2>Добавить зону с текущим рисунком?</h2>
-         <button className="canvas__button-item-add" onClick={addArea}>Добавить</button>
-         <button className="canvas__button-item-cancel" onClick={cancelAreaAdding}>Отмена</button>
-       </div>
+      <canvas ref={canvasRef} id="canvas" width={clientWidthRef.current * 0.55} height={600} />
+      {endSelection &&
+        <div className="canvas__button-div">
+          <h2>Добавить зону с текущим рисунком?</h2>
+          <button className="canvas__button-item-add" onClick={addArea}>Добавить</button>
+          <button className="canvas__button-item-cancel" onClick={cancelAreaAdding}>Отмена</button>
+        </div>
       }
     </>
   )

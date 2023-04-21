@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import { useState } from 'react'
 import { useAppDispatch } from "../../app/hooks"
-import { updateSelectedCamera } from "../../store/cameraSelectionReducer"
+import { updateSelectedCamera } from "../../store/Reducers/cameraSelectionReducer"
 
 interface NavHeaderProps {
   title: string
@@ -18,7 +18,16 @@ export default function NavHeader({ title, showMenu }: NavHeaderProps) {
   const navigate = useNavigate()
 
   const goBack = () => {
-    dispatch(updateSelectedCamera({}))
+    dispatch(updateSelectedCamera(
+      {
+        id: null,
+        name: '',
+        link: '',
+        areas: [],
+        processDelay: null,
+        openedCanvas: false,
+      }
+    ))
     navigate('/')
   }
 

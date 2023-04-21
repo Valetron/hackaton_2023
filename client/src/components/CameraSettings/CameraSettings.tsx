@@ -1,18 +1,20 @@
 import { FormEvent, useState, useEffect } from 'react'
-import { Button, Input } from '@chakra-ui/react'
+import { Input } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import './CameraSettings.scss'
-import { updateCameraAction } from '../../store/cameraReducer'
-import { updateSelectedCamera } from '../../store/cameraSelectionReducer'
+import { CamerasObjectArray, updateCamera } from '../../store/Reducers/cameraReducer'
+import { updateSelectedCamera } from '../../store/Reducers/cameraSelectionReducer'
 import { useLocation } from 'react-router-dom'
 import ZonesList from './ZonesList'
 import CameraSettingsButtons from './Buttons'
+import './CameraSettings.scss'
+import axios from 'axios'
+import { serverUrl } from '../../server-info'
 
 export default function CameraSettings() {
 
   const [cameraName, setCameraName] = useState<string>('')
   const [cameraLink, setCameraLink] = useState<string>('')
-  const [period, setPeriod] = useState<number>()
+  const [period, setPeriod] = useState<number | null>(null)
   const [onError, setOnError] = useState<boolean>(false)
 
   const itemID = useLocation().pathname.replace(/\D/g, "")
@@ -30,7 +32,8 @@ export default function CameraSettings() {
       return
     }
 
-    if ((cameraName === selectedCamera.name) && (cameraLink === selectedCamera.link)) {
+
+    if ((cameraName === selectedCamera?.name) && (cameraLink === selectedCamera?.link) && (period === selectedCamera?.processDelay)) {
       setOnError(true)
       return
     }
@@ -38,22 +41,39 @@ export default function CameraSettings() {
     const newCameraObject = {
       ...selectedCamera,
       name: name,
-      link: link
+      link: link,
+      processDelay: period
     }
 
-    dispatch(updateCameraAction(newCameraObject))
+    axios.post(`${serverUrl}/post/modify/camera`, JSON.stringify({
+      id: selectedCamera.id,
+      name: name,
+      link: link,
+      processDelay: period
+    }))
+
+    dispatch(updateCamera(newCameraObject))
     dispatch(updateSelectedCamera(newCameraObject))
   }
 
   const isCurrentCamera = () => {
-    if (selectedCamera.id === undefined || selectedCamera.id !== itemID) {
-      dispatch(updateSelectedCamera(cameraArray.find((item: any) => {
+
+    setCameraName(selectedCamera.name)
+    setCameraLink(selectedCamera.link)
+    setPeriod(selectedCamera.processDelay)
+
+    if (selectedCamera.id === undefined || selectedCamera.id === null || selectedCamera.id !== Number(itemID)) {
+
+      const updatedCamera = cameraArray.find((item: any) => {
         if (item.id === Number(itemID)) {
           setCameraName(item.name)
           setCameraLink(item.link)
           return item.id === Number(itemID)
         }
-      })))
+      }) as CamerasObjectArray
+        console.log(updateCamera)
+
+      dispatch(updateSelectedCamera(updatedCamera))
     }
   }
 
@@ -97,10 +117,10 @@ export default function CameraSettings() {
             <div>Ссылка</div>
             <Input placeholder="Ссылка на камеру" value={cameraLink} onChange={(e) => setCameraLink(e.target.value)} />
           </div>
-            <div>
+          <div>
             <div>Период обработки</div>
-              <input type="numeric" value={period} onChange={(e) => setPeriod(Number(e.target.value))}/>
-            </div>
+            <input type="numeric" value={Number(period)} onChange={(e) => setPeriod(Number(e.target.value))} />
+          </div>
           <div className="camera-settings__buttons">
             <button
               type="submit"
