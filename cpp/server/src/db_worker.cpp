@@ -3,7 +3,7 @@
 DBWorker::DBWorker(const std::string& dataBaseCredentials)
 {
     checkConnection(dataBaseCredentials);
-    std::clog << "database OK\n";
+    std::clog << "[Server]: database connected\n";
 }
 
 void DBWorker::checkConnection(const std::string& dataBaseCredentials)
@@ -16,7 +16,7 @@ void DBWorker::checkConnection(const std::string& dataBaseCredentials)
     for (const auto& [name, query] : PREPARED_STATEMENTS)
         _connection->prepare(name, query);
 
-    _notifyListener = std::make_unique<NotificationListener>(*_connection, "new_notify"); // TODO: поменять название на понятное в скрипте
+    _notifyListener = std::make_unique<NotificationListener>(*_connection, "add_event");
 }
 
 std::string DBWorker::getData(const std::string& tableName, const int id)
@@ -37,6 +37,14 @@ std::string DBWorker::getData(const std::string& tableName, const int id)
         return std::string();
 
     return pqxx::to_string(res.at(0).at(0));
+}
+
+pqxx::result DBWorker::getAllCameras()
+{
+    pqxx::work txn(*_connection);
+    const auto allCameras = txn.exec_prepared("select_all_cameras");
+    txn.commit();
+    return allCameras;
 }
 
 //void DBWorker::run()

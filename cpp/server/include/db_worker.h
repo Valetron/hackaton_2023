@@ -10,12 +10,13 @@ namespace
 {
 static const std::map<std::string, std::string> PREPARED_STATEMENTS
 {
-        {"select_camera", "select * from camera where id = $1"},
-        {"select_event", "select * from event where id = $1"},
-        {"insert_camera", "insert into camera (name, processing_period, stream, areas)"
-                          "VALUES ($1, $2, $3, $4)"},
-        {"insert_event", "insert into event (camera_id, description, time_stamp, photo)"
-                         "VALUES ($1, $2, $3, $4)"},
+    {"select_all_cameras", "select * from camera"},
+    {"select_camera", "select * from camera where id = $1"},
+    {"select_event", "select * from event where id = $1"},
+    {"insert_camera", "insert into camera (name, processing_period, stream, areas)"
+                      "VALUES ($1, $2, $3, $4)"},
+    {"insert_event", "insert into event (camera_id, description, time_stamp, photo)"
+                     "VALUES ($1, $2, $3, $4)"},
 };
 }
 
@@ -25,13 +26,11 @@ public:
     NotificationListener(pqxx::connection_base& connection, const std::string& channel)
                         : pqxx::notification_receiver(connection, channel)
     {
-        std::clog << "o4k0\n";
     }
 
-    virtual void operator()(const std::string& payload, int pid) override
+    void operator()(const std::string& payload, int pid) override
     {
         _data = payload;
-        std::clog << "Receiver - " << payload << "\n";
     }
 
     const std::string& getData()
@@ -52,11 +51,12 @@ public:
     void setData(const std::string& tableName, const std::string& rawData);
     void run();
     void getEvent();
+    pqxx::result getAllCameras();
 
 private:
     void checkConnection(const std::string& dataBaseCredentials);
 
 private:
-    std::unique_ptr<pqxx::connection>       _connection;
-    std::unique_ptr<NotificationListener>   _notifyListener;
+    std::unique_ptr<pqxx::connection> _connection;
+    std::unique_ptr<NotificationListener> _notifyListener;
 };

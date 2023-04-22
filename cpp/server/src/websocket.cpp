@@ -1,19 +1,6 @@
-#include <nlohmann/json.hpp>
+//#include <nlohmann/json.hpp>
 
-#include "websocket.h"
-
-WebSocketServer::WebSocketServer(int port)
-{
-    CROW_ROUTE(_app, "/")
-    ([]() {
-        return "Hello, world!";
-    });
-}
-
-void WebSocketServer::run()
-{
-    _app.port(18080).run();
-}
+//#include "websocket.h"
 
 //WebSocketServer::WebSocketServer(int port)
 //{
