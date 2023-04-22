@@ -37,12 +37,17 @@ export default function CameraAdd() {
       link: link,
       areas: [],
       processDelay: cameraProcessDelay,
-      openedCanvas: false
     }
 
     try {
       const response = await axios.post(`${serverUrl}/post/camera`, JSON.stringify(newPostCamera))
-      dispatch(addCamera(JSON.parse(response.data)))
+
+      const newCameraObject = {
+        ...response.data,
+        openedCanvas: false
+      }
+
+      dispatch(addCamera(newCameraObject))
     } catch (err) {
       console.log(err)
     }
