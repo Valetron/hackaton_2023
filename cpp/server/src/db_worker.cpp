@@ -53,6 +53,13 @@ void DBWorker::addCamera(const std::string& cameraName, const int procDelay, con
     txn.commit();
 }
 
+void DBWorker::modifyCamera(const int id, const std::string& cameraName, const int procDelay, const std::string& link)
+{
+    pqxx::work txn(*_connection);
+    const auto allCameras = txn.exec_prepared("update_camera", id, cameraName, link, procDelay);
+    txn.commit();
+}
+
 //void DBWorker::run()
 //{
 //    _connection->await_notification();

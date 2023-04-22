@@ -17,6 +17,7 @@ static const std::map<std::string, std::string> PREPARED_STATEMENTS
                       "VALUES ($1, $2, $3, $4)"},
     {"insert_event", "insert into event (camera_id, description, time_stamp, photo)"
                      "VALUES ($1, $2, $3, $4)"},
+    {"update_camera", "update camera set name = $2, link = $3, processDelay = $4 where id = $1"},
 };
 }
 
@@ -53,7 +54,7 @@ public:
     void getEvent();
     int getNewCameraId();
     void addCamera(const std::string& cameraName, const int procDelay, const std::string& link, const std::string& areas);
-    void modifyCamera(const std::string& cameraName, const int procDelay, const std::string& link, const std::string& areas);
+    void modifyCamera(const int id, const std::string& cameraName, const int procDelay, const std::string& link);
     pqxx::result getAllCameras();
 
 

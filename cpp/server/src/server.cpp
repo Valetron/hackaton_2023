@@ -65,18 +65,22 @@ void Server::initREST()
                                     {"link", stream},
                                     {"areas", area} });
 
-
         return crow::response(camera);
     });
 
     CROW_ROUTE(_app, "/post/modify/camera").methods(crow::HTTPMethod::Post)
-    ([](const crow::request& req)
+    ([this](const crow::request& req)
     {
         auto cameraData = crow::json::load(req.body);
         if (!cameraData)
             return crow::response(400);
 
-        std::clog << "MODIFY - " << cameraData << "\n";
+        int cameraId = cameraData["id"].i();
+        std::string cameraName{cameraData["name"]};
+        int procDel = cameraData["processDelay"].i();
+        std::string stream{cameraData["link"]};
+
+        _database.modifyCamera(cameraId, cameraName, procDel, stream);
 
         return crow::response();
     });
