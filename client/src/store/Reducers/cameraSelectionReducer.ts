@@ -5,7 +5,7 @@ const initialState = {
     id: null,
     name: '',
     link: '',
-    areas: [],
+    areas: [] as any,
     processDelay: 0,
     openedCanvas: false
   } 

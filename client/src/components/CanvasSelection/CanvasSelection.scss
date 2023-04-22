@@ -21,3 +21,81 @@
   border: 1px solid var(--button-outline-color);
   color: var(--title-color);
 }
+
+.canvas-add__container {
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.canvas-add__background {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2022;
+
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.canvas-add__item {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1 0 0;
+  position: relative;
+  width: 28rem;
+  height: 16rem; 
+  background-color: var(--container-color);
+  border-radius: 10px;
+  z-index: 2023;
+
+  &__title {
+   color: var(--title-color);
+   padding: .5rem 1rem;
+  }
+
+  &__form {
+    min-height: calc(100% - 5.5rem);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+  }
+
+  &__form input {
+    padding: 0 .25rem ;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #fff;
+    color: var(--text-color);
+  }
+
+  &__buttons {
+    width: 100%;
+    position: absolute;
+    bottom:0;
+    right: 0;
+    padding: .7rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+
+  &__buttons button {
+    color: var(--text-color);
+    padding: 0rem .2em;
+    background-color: var(--button-bg-color);
+  }
+
+  &__buttons button:hover {
+    background-color: var(--button-action-color);
+  }
+}

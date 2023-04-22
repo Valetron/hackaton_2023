@@ -1,25 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import axios from "axios"
+import { ICamera } from "../../models/ICamera"
 import { serverUrl } from "../../server-info"
-
-export interface AreasPoints {
-  x: number
-  y: number
-}
-
-export interface CamerasAreas {
-  name: string
-  points: Array<AreasPoints>
-}
-
-export interface CamerasObjectArray {
-  id: number | null
-  name: string
-  areas: Array<CamerasAreas>
-  link: string
-  processDelay: number | null
-  openedCanvas: boolean
-}
 
 const initialState = {
   cameraArray: [
@@ -99,7 +81,7 @@ export const fetchCameras = createAsyncThunk(
   'cameras/getCameras',
   async (_, thinkAPI) => {
     try {
-      const response = await axios.get<CamerasObjectArray[]>(`${serverUrl}/get/cameras`)
+      const response = await axios.get<ICamera[]>(`${serverUrl}/get/cameras`)
       return response.data
     } catch (error) {
       return thinkAPI.rejectWithValue("Нет подключения к серверу")

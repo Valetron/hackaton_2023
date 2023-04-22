@@ -3,8 +3,6 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { removeCamera, updateCamera } from "../../store/Reducers/cameraReducer"
 import { removeSelectedCamera } from "../../store/Reducers/cameraSelectionReducer"
 
-
-
 export default function CameraSettingsButtons() {
 
   const selectedCamera = useAppSelector(state => state.currentCamera.selectedCamera)
@@ -36,7 +34,7 @@ export default function CameraSettingsButtons() {
 
   const deleteCameraHandler = () => {
     dispatch(removeCamera(selectedCamera.id))
-    
+
     dispatch(removeSelectedCamera())
     navigate('/cameras')
   }

@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 const initialState = {
-  opened: false
+  openedAddArea: false,
+  openedAddCamera: false
 }
 
 const addCameraModal = createSlice({
@@ -9,10 +10,13 @@ const addCameraModal = createSlice({
   initialState,
   reducers: {
     openAddCameraModal(state, action: PayloadAction<boolean>) {
-      state.opened = action.payload
+      state.openedAddCamera = action.payload
+    },
+    openAddAreaModal(state, action: PayloadAction<boolean>) {
+      state.openedAddArea = action.payload
     }
   }
 })
 
-export const { openAddCameraModal } = addCameraModal.actions
+export const { openAddCameraModal, openAddAreaModal } = addCameraModal.actions
 export default addCameraModal.reducer

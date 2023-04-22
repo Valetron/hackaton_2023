@@ -1,28 +1,29 @@
+import axios from 'axios'
 import { useRef, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import { serverUrl } from '../../server-info'
+import { openAddAreaModal } from '../../store/Reducers/cameraAddReducer'
 import { updateCamera } from '../../store/Reducers/cameraReducer'
 import { updateSelectedCamera } from '../../store/Reducers/cameraSelectionReducer'
+import AreaAdd from './AreaAdd'
 import './CanvasSelection.scss'
 
 const CanvasSelection = () => {
 
   const selectedCamera = useAppSelector(state => state.currentCamera.selectedCamera)
+  const openedAddArea = useAppSelector(state => state.addCameraModal.openedAddArea)
 
   const dispatch = useAppDispatch()
 
-  const [activeSelect, setActiveSelect] = useState<boolean>(false)
-
-  const [successAdd, setSuccessAdd] = useState<boolean>(false)
-
-  const [posted, setPosted] = useState<boolean>(false)
-
-  const [shapesList, setShapesList] = useState<Array<any>>([])
+  const EXP_RATE = 20 
 
   const [endSelection, setEndSelection] = useState<boolean>(false)
   const [startLoading, setStartLoading] = useState<boolean>(false)
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const ctxRef = useRef(canvasRef.current?.getContext('2d'))
+
+  let shapesList: any = []
 
   let currentPoints: any = []
   let clicked: boolean = false
@@ -33,7 +34,14 @@ const CanvasSelection = () => {
   let mouseX: number;
   let mouseY: number;
 
+  const pointsRef = useRef<Array<any>>([...currentPoints])
+  const shapesListRef = useRef<Array<any>>(shapesList)
+
   const mouseDown = function(event: MouseEvent) {
+    if (endSelection) {
+      return
+    }
+
     const canvBounds: any = canvasRef.current?.getBoundingClientRect();
     if (canvBounds == undefined) return;
     if (ctxRef.current == null) return;
@@ -58,9 +66,9 @@ const CanvasSelection = () => {
           x: currentPoints[0].x, y: currentPoints[0].y,
           dist: 0
         })
-        setShapesList((prev) => [...prev, currentPoints])
         connectWithStart = false
         setEndSelection(true)
+        pointsRef.current = currentPoints
       } else {
         currentPoints.push({
           x: startX, y: startY,
@@ -69,6 +77,7 @@ const CanvasSelection = () => {
       }
 
     }
+    shapesListRef.current = [...shapesList, currentPoints]
     event.preventDefault();
   }
 
@@ -97,11 +106,10 @@ const CanvasSelection = () => {
     mouseY = parseInt((event.clientY - canvBounds.top).toString())
 
     if (currentPoints.length > 2) {
-      if (Math.abs(mouseX - currentPoints[0].x) < 10 && Math.abs(mouseY - currentPoints[0].y) < 10) {
+      if (Math.abs(mouseX - currentPoints[0].x) < EXP_RATE && Math.abs(mouseY - currentPoints[0].y) < EXP_RATE) {
         ctxRef.current.fillStyle = 'yellow'
         ctxRef.current.fillRect(currentPoints[0].x - 4, currentPoints[0].y - 4, 8, 8)
         ctxRef.current.fill()
-        console.log('close to start')
         connectWithStart = true
       } else {
         connectWithStart = false
@@ -109,7 +117,7 @@ const CanvasSelection = () => {
     }
 
     ctxRef.current.beginPath()
-    ctxRef.current.strokeStyle = 'red'
+    ctxRef.current.strokeStyle = '#FCA311'
     ctxRef.current.lineWidth = 5
     if (currentPoints.length > 0)
       ctxRef.current.moveTo(currentPoints[currentPoints.length - 1].x, currentPoints[currentPoints.length - 1].y)
@@ -131,9 +139,9 @@ const CanvasSelection = () => {
     // Draw all shapes
     for (let i = 0; i < shapesList.length; ++i) {
       for (let j = 0; j < shapesList[i].length; j++) {
-        ctx.strokeStyle = 'red';
+        ctx.strokeStyle = '#FCA311';
         ctx.lineWidth = 5
-        ctxRef.current.fillStyle = 'red'
+        ctxRef.current.fillStyle = '#FCA311'
         ctxRef.current.moveTo(shapesList[i][j].x, shapesList[i][j].y)
         ctxRef.current.arc(shapesList[i][j].x, shapesList[i][j].y, 5, 0, 2 * Math.PI)
         ctxRef.current.fill()
@@ -145,10 +153,12 @@ const CanvasSelection = () => {
       ctxRef.current.stroke()
     }
 
+    // Draw last shape
+
     // Draw lines between current points
     if (currentPoints.length > 0) {
       for (let i = 0; i < currentPoints.length - 1; ++i) {
-        ctx.strokeStyle = 'red'
+        ctx.strokeStyle = '#FCA311'
         ctx.lineWidth = 5
         ctxRef.current.moveTo(currentPoints[i].x, currentPoints[i].y)
         ctxRef.current.lineTo(currentPoints[i + 1].x, currentPoints[i + 1].y)
@@ -186,11 +196,13 @@ const CanvasSelection = () => {
     setStartLoading(true)
 
     let shapesPoints: any = []
-    for (let i = 0; i < selectedCamera.areas.length - 1; ++i) {
+    for (let i = 0; i < selectedCamera.areas.length; ++i) {
       shapesPoints.push(selectedCamera.areas[i].points)
     }
 
-    setShapesList(shapesPoints)
+    shapesList = [...shapesPoints, ...shapesListRef.current]
+    shapesListRef.current = []
+    console.log(selectedCamera.areas)
 
     draw_shapes(ctxRef.current)
 
@@ -198,28 +210,43 @@ const CanvasSelection = () => {
 
   // add zone callback
 
-  const addArea = () => {
 
-    const newArea =
-    {
-      name: "newZone",
-      points: shapesList[shapesList.length - 1]
+  const confirmAdding = () => {
+    dispatch(openAddAreaModal(true))
+    currentPoints = []
+  }
+
+  const onSubmitAdding = async (title: string) => {
+
+    const newArea = {
+      cameraId: selectedCamera.id,
+      name: title,
+      points: pointsRef.current
+    }
+
+    try {
+      await axios.post(`${serverUrl}/post/newArea`, JSON.stringify(newArea))
+    } catch (error) {
+      console.log(error)
     }
 
     const cameraWithNewArea = {
       ...selectedCamera,
       areas: [
         ...selectedCamera.areas,
-        newArea
+        {
+          name: title,
+          points: pointsRef.current
+        }
       ]
     }
 
-    dispatch(updateCamera(cameraWithNewArea))
-    dispatch(updateSelectedCamera(cameraWithNewArea))
-
-    currentPoints = []
-
     setEndSelection(false)
+    dispatch(updateSelectedCamera(cameraWithNewArea))
+    dispatch(updateCamera(cameraWithNewArea))
+    dispatch(openAddAreaModal(false))
+
+
   }
 
   const cancelAreaAdding = () => {
@@ -230,11 +257,12 @@ const CanvasSelection = () => {
 
   return (
     <>
+      { openedAddArea && <AreaAdd onPress={(title) => onSubmitAdding(title)} />}
       <canvas ref={canvasRef} id="canvas" width={clientWidthRef.current * 0.55} height={600} />
       {endSelection &&
         <div className="canvas__button-div">
           <h2>Добавить зону с текущим рисунком?</h2>
-          <button className="canvas__button-item-add" onClick={addArea}>Добавить</button>
+          <button className="canvas__button-item-add" onClick={confirmAdding}>Добавить</button>
           <button className="canvas__button-item-cancel" onClick={cancelAreaAdding}>Отмена</button>
         </div>
       }

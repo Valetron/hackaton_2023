@@ -93,6 +93,7 @@
   top: 0;
   width: 100vw;
   height: 100vh;
+  z-index: 2022;
 
   background: rgba(0, 0, 0, 0.15);
 }
@@ -103,7 +104,7 @@
   flex-grow: 1 0 0;
   position: relative;
   width: 28rem;
-  height: 14rem; 
+  height: 16rem; 
   background-color: var(--container-color);
   border-radius: 10px;
   z-index: 2023;
