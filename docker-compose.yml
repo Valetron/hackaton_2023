@@ -9,7 +9,7 @@ services:
     volumes:
       - ./client:/frontend
     working_dir: /frontend
-    entrypoint: ./start.sh
+    entrypoint: ./start.sh 
 
   database:
     image: postgres:14-alpine
@@ -22,8 +22,4 @@ services:
     environment:
       - POSTGRES_DB=hackaton
       - POSTGRES_PASSWORD=password
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "100m"
-        max-file: "3"
+
