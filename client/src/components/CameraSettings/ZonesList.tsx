@@ -1,6 +1,5 @@
 import { useEffect } from "react"
 import { useAppSelector } from "../../app/hooks"
-import { CamerasAreas, AreasPoints } from '../../store/cameraReducer'
 import ZonesItem from "./ZonesItem"
 
 

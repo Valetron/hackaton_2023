@@ -1,7 +1,8 @@
 import { useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import CameraItem from "./CameraItem"
-import { CamerasObjectArray, fetchCameras } from '../../store/Reducers/cameraReducer'
+import { ICamera } from "../../models/ICamera"
+import { fetchCameras } from '../../store/Reducers/cameraReducer'
 import './Cameras.scss'
 import { openAddCameraModal } from "../../store/Reducers/cameraAddReducer"
 import { closeCanvas, updateSelectedCamera } from "../../store/Reducers/cameraSelectionReducer"
@@ -25,12 +26,13 @@ export default function CamerasList() {
     dispatch(openAddCameraModal(true))
   }
 
-  const selectCameraHandler = (item: CamerasObjectArray) => {
+  const selectCameraHandler = (item: ICamera) => {
     dispatch(updateSelectedCamera({ ...item }))
     navigate(`${item.id}`)
   }
 
   useEffect(() => {
+    console.log('fetch')
     dispatch(fetchCameras())
   }, [])
 
@@ -38,7 +40,7 @@ export default function CamerasList() {
     <div className="camera__container">
       <ul className="camera__list">
         {cameraArray.map(
-          (item: CamerasObjectArray, index: number) => (
+          (item: ICamera, index: number) => (
             <CameraItem
               key={index}
               name={item.name}

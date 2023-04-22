@@ -1,7 +1,8 @@
 import { FormEvent, useState, useEffect } from 'react'
 import { Input } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import { CamerasObjectArray, updateCamera } from '../../store/Reducers/cameraReducer'
+import { ICamera } from '../../models/ICamera'
+import { updateCamera } from '../../store/Reducers/cameraReducer'
 import { updateSelectedCamera } from '../../store/Reducers/cameraSelectionReducer'
 import { useLocation } from 'react-router-dom'
 import ZonesList from './ZonesList'
@@ -70,8 +71,7 @@ export default function CameraSettings() {
           setCameraLink(item.link)
           return item.id === Number(itemID)
         }
-      }) as CamerasObjectArray
-        console.log(updateCamera)
+      }) as ICamera
 
       dispatch(updateSelectedCamera(updatedCamera))
     }
