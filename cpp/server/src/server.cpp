@@ -31,7 +31,7 @@ void Server::initREST()
             crow::json::wvalue camera;
             camera["id"] = pqxx::from_string<int>(cameras.at(i).at(0));
             camera["name"] = pqxx::to_string(cameras.at(i).at(1));
-            camera["processing_period"] = pqxx::from_string<int>(cameras.at(i).at(2));
+            camera["processDelay"] = pqxx::from_string<int>(cameras.at(i).at(2));
             camera["link"] = pqxx::to_string(cameras.at(i).at(3));
             camera["areas"] = pqxx::to_string(cameras.at(i).at(4));
 
@@ -52,13 +52,13 @@ void Server::initREST()
         // сделать структуру
 
         std::string cameraName{newCamera["name"]};
-        int procDel = newCamera["processing_period"].i();
+        int procDel = newCamera["processDelay"].i();
         std::string stream{newCamera["link"]};
         std::string area{newCamera["areas"]};
 
         _database.addCamera(cameraName, procDel, stream, area);
 
-        std::clog << newCamera["processing_period"] << "\n";
+        std::clog << newCamera["processDelay"] << "\n";
 
         return crow::response(); // вернуть всё + id камеры
     });

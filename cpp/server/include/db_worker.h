@@ -13,7 +13,7 @@ static const std::map<std::string, std::string> PREPARED_STATEMENTS
     {"select_all_cameras", "select * from camera"},
     {"select_camera", "select * from camera where id = $1"},
     {"select_event", "select * from event where id = $1"},
-    {"insert_camera", "insert into camera (name, processing_period, stream, areas)"
+    {"insert_camera", "insert into camera (name, processDelay, link, areas)"
                       "VALUES ($1, $2, $3, $4)"},
     {"insert_event", "insert into event (camera_id, description, time_stamp, photo)"
                      "VALUES ($1, $2, $3, $4)"},
