@@ -32,7 +32,7 @@ void Server::initREST()
             camera["id"] = pqxx::from_string<int>(cameras.at(i).at(0));
             camera["name"] = pqxx::to_string(cameras.at(i).at(1));
             camera["processing_period"] = pqxx::from_string<int>(cameras.at(i).at(2));
-            camera["stream"] = pqxx::to_string(cameras.at(i).at(3));
+            camera["link"] = pqxx::to_string(cameras.at(i).at(3));
             camera["areas"] = pqxx::to_string(cameras.at(i).at(4));
 
             camerasJson.push_back(camera);
@@ -53,7 +53,7 @@ void Server::initREST()
 
         std::string cameraName{newCamera["name"]};
         int procDel = newCamera["processing_period"].i();
-        std::string stream{newCamera["stream"]};
+        std::string stream{newCamera["link"]};
         std::string area{newCamera["areas"]};
 
         _database.addCamera(cameraName, procDel, stream, area);
