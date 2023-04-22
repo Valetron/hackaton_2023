@@ -20,13 +20,6 @@ void Server::initREST()
         .prefix("/cors")
         .origin("127.0.0.1");
 
-    //    CROW_ROUTE(_app, "/")
-    //    ([]()
-    //    {
-    //        return "Hello";
-    //    });
-
-
     CROW_ROUTE(_app, "/get/cameras").methods(crow::HTTPMethod::Get)
     ([this]()
     {
@@ -35,33 +28,37 @@ void Server::initREST()
 
         for (int i = 0; i < cameras.size(); ++i)
         {
-            //            json camera = { { "name", cameras.at(i).at(1) },
-            //                            { "processing_period", cameras.at(i).at(2) },
-            //                            { "stream", cameras.at(i).at(3) },
-            //                            { "areas", cameras.at(i).at(4) } };
-
             crow::json::wvalue camera;
+            camera["id"] = pqxx::from_string<int>(cameras.at(i).at(0));
             camera["name"] = pqxx::to_string(cameras.at(i).at(1));
             camera["processing_period"] = pqxx::from_string<int>(cameras.at(i).at(2));
             camera["stream"] = pqxx::to_string(cameras.at(i).at(3));
             camera["areas"] = pqxx::to_string(cameras.at(i).at(4));
 
-            camerasJson.emplace_back(camera);
+            camerasJson.push_back(camera);
         }
-//        return camerasJson;
-
-//        return crow::json::wvalue(f);
 
         return crow::json::wvalue(camerasJson);
     });
 
     CROW_ROUTE(_app, "/post/camera").methods(crow::HTTPMethod::Post)
-    ([](const crow::request& req)
+    ([this](const crow::request& req)
     {
         auto newCamera = crow::json::load(req.body);
-        if (!newCamera) return crow::response(400);
+        if (!newCamera)
+            return crow::response(400);
 
-        std::clog << "ЙА ПАЛУЧИЛ- " << newCamera["name"] << "\n";
+        std::clog << newCamera << "\n";
+        // сделать структуру
+
+        std::string cameraName{newCamera["name"]};
+        int procDel = newCamera["processing_period"].i();
+        std::string stream{newCamera["stream"]};
+        std::string area{newCamera["areas"]};
+
+        _database.addCamera(cameraName, procDel, stream, area);
+
+        std::clog << newCamera["processing_period"] << "\n";
 
         return crow::response(); // вернуть всё + id камеры
     });
@@ -70,7 +67,8 @@ void Server::initREST()
     ([](const crow::request& req)
     {
         auto cameraData = crow::json::load(req.body);
-        if (!cameraData) return crow::response(400);
+        if (!cameraData)
+            return crow::response(400);
 
         std::clog << "MODIFY - " << cameraData << "\n";
 

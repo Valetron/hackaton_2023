@@ -42,9 +42,17 @@ std::string DBWorker::getData(const std::string& tableName, const int id)
 pqxx::result DBWorker::getAllCameras()
 {
     pqxx::work txn(*_connection);
-    const auto allCameras = txn.exec_prepared("select_all_cameras");
+//    const auto allCameras = txn.exec_prepared("select_all_cameras");
+//    txn.commit();
+//    return allCameras;
+    return txn.exec_prepared("select_all_cameras");
+}
+
+void DBWorker::addCamera(const std::string& cameraName, const int procDelay, const std::string& link, const std::string& areas)
+{
+    pqxx::work txn(*_connection);
+    const auto allCameras = txn.exec_prepared("insert_camera", cameraName, procDelay, link, areas);
     txn.commit();
-    return allCameras;
 }
 
 //void DBWorker::run()

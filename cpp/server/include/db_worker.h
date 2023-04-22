@@ -51,7 +51,10 @@ public:
     void setData(const std::string& tableName, const std::string& rawData);
     void run();
     void getEvent();
+    void addCamera(const std::string& cameraName, const int procDelay, const std::string& link, const std::string& areas);
+    void modifyCamera(const std::string& cameraName, const int procDelay, const std::string& link, const std::string& areas);
     pqxx::result getAllCameras();
+
 
 private:
     void checkConnection(const std::string& dataBaseCredentials);
