@@ -35,7 +35,7 @@ export default function CameraAdd() {
     const newPostCamera = {
       name: name,
       link: link,
-      areas: [],
+      areas: JSON.stringify([]),
       processDelay: cameraProcessDelay,
     }
 
