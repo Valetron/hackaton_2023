@@ -16,7 +16,8 @@ void DBWorker::checkConnection(const std::string& dataBaseCredentials)
     for (const auto& [name, query] : PREPARED_STATEMENTS)
         _connection->prepare(name, query);
 
-    _notifyListener = std::make_unique<NotificationListener>(*_connection, "add_event");
+    _notifyEvent = std::make_unique<NotificationListener>(*_connection, "add_event");
+    _notifyCamera = std::make_unique<NotificationListener>(*_connection, "add_camera");
 }
 
 std::string DBWorker::getData(const std::string& tableName, const int id)
@@ -42,10 +43,7 @@ std::string DBWorker::getData(const std::string& tableName, const int id)
 pqxx::result DBWorker::getAllCameras()
 {
     pqxx::work txn(*_connection);
-    const auto allCameras = txn.exec_prepared("select_all_cameras");
-    txn.commit();
-    return allCameras;
-//    return txn.exec_prepared("select_all_cameras");
+    return txn.exec_prepared("select_all_cameras");
 }
 
 void DBWorker::addCamera(const std::string& cameraName, const int procDelay, const std::string& link, const std::string& areas)
@@ -64,7 +62,15 @@ void DBWorker::addCamera(const std::string& cameraName, const int procDelay, con
 void DBWorker::getEvent()
 {
     if (_connection->get_notifs() > 0)
-        std::clog << _notifyListener->getData() << "\n";
+        std::clog << _notifyEvent->getData() << "\n";
+}
+
+int DBWorker::getNewCameraId()
+{
+
+    if (_connection->get_notifs() > 0)
+        return std::stoi(_notifyCamera->getData());
+    return -1;
 }
 
 /* ЧатГПТ ответил, не ругайте в ревью. Вероятно, будем использовать get_notifs()

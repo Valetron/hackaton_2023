@@ -51,6 +51,7 @@ public:
     void setData(const std::string& tableName, const std::string& rawData);
     void run();
     void getEvent();
+    int getNewCameraId();
     void addCamera(const std::string& cameraName, const int procDelay, const std::string& link, const std::string& areas);
     void modifyCamera(const std::string& cameraName, const int procDelay, const std::string& link, const std::string& areas);
     pqxx::result getAllCameras();
@@ -61,5 +62,6 @@ private:
 
 private:
     std::unique_ptr<pqxx::connection> _connection;
-    std::unique_ptr<NotificationListener> _notifyListener;
+    std::unique_ptr<NotificationListener> _notifyEvent;
+    std::unique_ptr<NotificationListener> _notifyCamera;
 };

@@ -48,9 +48,6 @@ void Server::initREST()
         if (!newCamera)
             return crow::response(400);
 
-        std::clog << newCamera << "\n";
-        // сделать структуру
-
         std::string cameraName{newCamera["name"]};
         int procDel = newCamera["processDelay"].i();
         std::string stream{newCamera["link"]};
@@ -58,9 +55,18 @@ void Server::initREST()
 
         _database.addCamera(cameraName, procDel, stream, area);
 
-        std::clog << newCamera["processDelay"] << "\n";
+        auto cameraId = _database.getNewCameraId();
+        if (cameraId < 0)
+            return crow::response(418);
 
-        return crow::response(); // вернуть всё + id камеры
+        crow::json::wvalue camera({ {"id", cameraId},
+                                    {"name", cameraName},
+                                    {"processDelay", newCamera},
+                                    {"link", stream},
+                                    {"areas", area} });
+
+
+        return crow::response(camera);
     });
 
     CROW_ROUTE(_app, "/post/modify/camera").methods(crow::HTTPMethod::Post)
