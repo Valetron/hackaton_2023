@@ -7,7 +7,12 @@ import CameraSettingsRouter from './components/AppRouter/CameraSettingsRouter'
 
 function App() {
 
+<<<<<<< HEAD
   const addCameraModal = useAppSelector(state => state.addCameraModal.opened)
+=======
+  const { openedAddCamera } = useAppSelector(state => state.addCameraModal)
+  const selectedCamera = useAppSelector(state => state.currentCamera.selectedCamera)
+>>>>>>> c05aadf... finished canvas + added server post new area
 
   return (
     <div className="App">
@@ -17,6 +22,7 @@ function App() {
           <CameraAdd />
         }
         <main className="content">
+          {selectedCamera !== undefined ? selectedCamera.openedCanvas && <CanvasSelection /> : null}
         </main>
         <footer>
             <CameraSettingsRouter />
