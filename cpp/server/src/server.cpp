@@ -65,7 +65,7 @@ void Server::initREST()
                                     {"link", stream},
                                     {"areas", area} });
 
-        return crow::response(camera);
+        return crow::response(camera); // TODO: отослать отсортированные
     });
 
     CROW_ROUTE(_app, "/post/modify/camera").methods(crow::HTTPMethod::Post)
