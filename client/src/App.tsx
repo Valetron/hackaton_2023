@@ -9,6 +9,7 @@ import CameraSettingsRouter from './components/AppRouter/CameraSettingsRouter'
 function App() {
 
   const { openedAddCamera } = useAppSelector(state => state.addCameraModal)
+  const selectedCamera = useAppSelector(state => state.currentCamera.selectedCamera)
 
   return (
     <div className="App">
@@ -18,6 +19,7 @@ function App() {
           <CameraAdd />
         }
         <main className="content">
+          {selectedCamera !== undefined ? selectedCamera.openedCanvas && <CanvasSelection /> : null}
         </main>
         <footer>
           <CameraSettingsRouter />

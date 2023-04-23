@@ -5,6 +5,7 @@ import { serverUrl } from '../../server-info'
 import { openAddAreaModal } from '../../store/Reducers/cameraAddReducer'
 import { updateCamera } from '../../store/Reducers/cameraReducer'
 import { updateSelectedCamera } from '../../store/Reducers/cameraSelectionReducer'
+import { stopAddingToCamera } from '../../store/Reducers/CanvasReducer'
 import AreaAdd from './AreaAdd'
 import './CanvasSelection.scss'
 
@@ -12,10 +13,11 @@ const CanvasSelection = () => {
 
   const selectedCamera = useAppSelector(state => state.currentCamera.selectedCamera)
   const openedAddArea = useAppSelector(state => state.addCameraModal.openedAddArea)
+  const activeSelection = useAppSelector(state => state.canvasActiveAdding)
 
   const dispatch = useAppDispatch()
 
-  const EXP_RATE = 20 
+  const EXP_RATE = 20
 
   const [endSelection, setEndSelection] = useState<boolean>(false)
   const [startLoading, setStartLoading] = useState<boolean>(false)
@@ -38,6 +40,10 @@ const CanvasSelection = () => {
   const shapesListRef = useRef<Array<any>>(shapesList)
 
   const mouseDown = function(event: MouseEvent) {
+    if (!activeSelection.activeAdding) {
+      return
+    }
+
     if (endSelection) {
       return
     }
@@ -206,7 +212,7 @@ const CanvasSelection = () => {
 
     draw_shapes(ctxRef.current)
 
-  }, [startLoading, endSelection])
+  }, [startLoading, endSelection, activeSelection.activeAdding])
 
   // add zone callback
 
@@ -224,11 +230,6 @@ const CanvasSelection = () => {
       points: pointsRef.current
     }
 
-    try {
-      await axios.post(`${serverUrl}/post/newArea`, JSON.stringify(newArea))
-    } catch (error) {
-      console.log(error)
-    }
 
     const cameraWithNewArea = {
       ...selectedCamera,
@@ -241,23 +242,35 @@ const CanvasSelection = () => {
       ]
     }
 
+    try {
+      const newObjectToPost = {
+        id: selectedCamera.id,
+        areas: JSON.stringify(cameraWithNewArea.areas)
+      }
+
+      await axios.post(`${serverUrl}/post/newArea`, JSON.stringify(newObjectToPost))
+
+    } catch (error) {
+      console.log(error)
+    }
+
     setEndSelection(false)
     dispatch(updateSelectedCamera(cameraWithNewArea))
     dispatch(updateCamera(cameraWithNewArea))
     dispatch(openAddAreaModal(false))
-
-
+    dispatch(stopAddingToCamera())
   }
 
   const cancelAreaAdding = () => {
     shapesList.pop()
     setEndSelection(false)
+    dispatch(stopAddingToCamera())
     draw_shapes(ctxRef.current)
   }
 
   return (
     <>
-      { openedAddArea && <AreaAdd onPress={(title) => onSubmitAdding(title)} />}
+      {openedAddArea && <AreaAdd onPress={(title) => onSubmitAdding(title)} />}
       <canvas ref={canvasRef} id="canvas" width={clientWidthRef.current * 0.55} height={600} />
       {endSelection &&
         <div className="canvas__button-div">
