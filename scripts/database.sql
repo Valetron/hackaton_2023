@@ -2,8 +2,8 @@ CREATE TABLE IF NOT EXISTS camera
 (
 	id serial PRIMARY KEY,
 	name varchar(24) NOT NULL,
-	processing_period int DEFAULT 5,
-	stream varchar(255) NOT NULL,
+	process_delay int DEFAULT 5,
+	link varchar(255) NOT NULL,
 	areas text
 );
 
