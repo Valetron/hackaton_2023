@@ -41,3 +41,9 @@ source ~/.bash_profile
 ```
 source ~/.profile
 ``` 
+
+Сборка проекта:
+```
+mkdir build ; cd build ; cmake .. ; cmake --build .
+```
+
