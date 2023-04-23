@@ -20,8 +20,8 @@ export default function CameraAdd() {
   const dispatch = useAppDispatch()
 
   const closeWindow = () => {
-    cameras.map((item: any) => item.id === selectedCamera.id ? 
-    item.openedCanvas  === true ? dispatch(openCanvas()) : null : null
+    cameras.map((item: any) => item.id === selectedCamera.id ?
+      item.openedCanvas === true ? dispatch(openCanvas()) : null : null
     )
     dispatch(openAddCameraModal(false))
   }
@@ -44,8 +44,11 @@ export default function CameraAdd() {
 
       const newCameraObject = {
         ...response.data,
+        areas: JSON.parse(response.data.areas),
         openedCanvas: false
       }
+
+      console.log(newCameraObject)
 
       dispatch(addCamera(newCameraObject))
     } catch (err) {
@@ -53,8 +56,8 @@ export default function CameraAdd() {
     }
 
     closeWindow()
-    cameras.map((item: any) => item.id === selectedCamera.id ? 
-    item.openedCanvas  === true ? dispatch(openCanvas()) : null : null
+    cameras.map((item: any) => item.id === selectedCamera.id ?
+      item.openedCanvas === true ? dispatch(openCanvas()) : null : null
     )
   }
 
@@ -79,7 +82,7 @@ export default function CameraAdd() {
 
 
   return (
-   <div className="camera-add__container" >
+    <div className="camera-add__container" >
       <div className="camera-add__background">
 
       </div>

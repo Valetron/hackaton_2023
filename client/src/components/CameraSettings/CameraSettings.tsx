@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { ICamera } from '../../models/ICamera'
 import { updateCamera } from '../../store/Reducers/cameraReducer'
 import { updateSelectedCamera } from '../../store/Reducers/cameraSelectionReducer'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import ZonesList from './ZonesList'
 import CameraSettingsButtons from './Buttons'
 import './CameraSettings.scss'
@@ -13,15 +13,19 @@ import { serverUrl } from '../../server-info'
 
 export default function CameraSettings() {
 
+  const selectedCamera = useAppSelector(state => state.currentCamera.selectedCamera)
+  const cameraArray = useAppSelector(state => state.cameraArray)
+
   const [cameraName, setCameraName] = useState<string>('')
   const [cameraLink, setCameraLink] = useState<string>('')
   const [period, setPeriod] = useState<number | null>(null)
   const [onError, setOnError] = useState<boolean>(false)
+  const [isLoading, setLoading] = useState<boolean>(false)
+
+  const navigate = useNavigate()
 
   const itemID = useLocation().pathname.replace(/\D/g, "")
 
-  const selectedCamera = useAppSelector(state => state.currentCamera.selectedCamera)
-  const cameraArray = useAppSelector(state => state.cameraArray.cameraArray)
 
   const dispatch = useAppDispatch()
 
@@ -59,16 +63,22 @@ export default function CameraSettings() {
 
   const isCurrentCamera = () => {
 
-    setCameraName(selectedCamera.name)
-    setCameraLink(selectedCamera.link)
-    setPeriod(selectedCamera.processDelay)
+    if (selectedCamera !== undefined) {
+      console.log('123')
+      setCameraName(selectedCamera.name)
+      setCameraLink(selectedCamera.link)
+      setPeriod(selectedCamera.processDelay)
 
-    if (selectedCamera.id === undefined || selectedCamera.id === null || selectedCamera.id !== Number(itemID)) {
+    }
 
-      const updatedCamera = cameraArray.find((item: any) => {
+    if (selectedCamera?.id === undefined || selectedCamera?.id === null || selectedCamera?.id !== Number(itemID)) {
+
+
+      const updatedCamera = cameraArray.cameraArray.find((item: any) => {
         if (item.id === Number(itemID)) {
           setCameraName(item.name)
           setCameraLink(item.link)
+          setPeriod(item.processDelay)
           return item.id === Number(itemID)
         }
       }) as ICamera
@@ -93,14 +103,17 @@ export default function CameraSettings() {
   }
 
   useEffect(() => {
-    isCurrentCamera()
-  }, [selectedCamera.name, selectedCamera.link])
+      isCurrentCamera()
+    if (cameraArray.isLoading) {
+      navigate('/cameras')
+    }
+  }, [selectedCamera, cameraArray.isLoading, isLoading])
 
   useEffect(() => {
     blinkingPlacholder()
   }, [onError])
 
-  return selectedCamera.id !== undefined ? (
+  return selectedCamera?.id !== undefined ? (
     <div className="camera-settings__container">
       <div className="camera-settings__title">{selectedCamera.name}</div>
       <div className="camera-settings__content">
