@@ -40,3 +40,9 @@ conan install --build=missing .
 ```
 conan install --build=missing -s build_type=Debug .
 ```
+
+Сборка
+```
+mkdir build ; cd build ; cmake -DCMAKE_BUILD_TYPE=Release .. ; cmake --build .
+```
+
