@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS trace_point
 	camera_id int NOT NULL,
 	x int NOT NULL,
 	y int NOT NULL,
+	time_stamp timestamp DEFAULT current_timestamp,
 	FOREIGN KEY(camera_id) REFERENCES camera(id)
 );
 
