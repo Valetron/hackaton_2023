@@ -11,13 +11,14 @@ namespace
 static const std::map<std::string, std::string> PREPARED_STATEMENTS
 {
     {"select_all_cameras", "select * from camera"},
-    {"select_camera", "select * from camera where id = $1"},
-    {"select_event", "select * from event where id = $1"},
-    {"insert_camera", "insert into camera (name, processDelay, link, areas)"
-                      "VALUES ($1, $2, $3, $4)"},
-    {"insert_event", "insert into event (camera_id, description, time_stamp, photo)"
-                     "VALUES ($1, $2, $3, $4)"},
-    {"update_camera", "update camera set name = $2, link = $3, processDelay = $4 where id = $1"},
+    {"select_camera",      "select * from camera where id = $1"},
+    {"select_event",       "select * from event where id = $1"},
+    {"insert_camera",      "insert into camera (name, processDelay, link, areas)"
+                           "VALUES ($1, $2, $3, $4)"},
+    {"insert_event",       "insert into event (camera_id, description, time_stamp, photo)"
+                           "VALUES ($1, $2, $3, $4)"},
+    {"update_area",        "update camera set areas = $2 where id = $1"},
+    {"update_camera",      "update camera set name = $2, link = $3, processDelay = $4 where id = $1"},
 };
 }
 
@@ -48,13 +49,11 @@ class DBWorker final
 public:
     DBWorker() = default;
     DBWorker(const std::string& dataBaseCredentials);
-    std::string getData(const std::string& tableName, const int id);
-    void setData(const std::string& tableName, const std::string& rawData);
-    void run();
-    void getEvent();
     int getNewCameraId();
+    void getEvent();
     void addCamera(const std::string& cameraName, const int procDelay, const std::string& link, const std::string& areas);
     void modifyCamera(const int id, const std::string& cameraName, const int procDelay, const std::string& link);
+    void updateArea(const int id, const std::string& area);
     pqxx::result getAllCameras();
 
 

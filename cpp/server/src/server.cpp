@@ -38,7 +38,7 @@ void Server::initREST()
             camerasJson.push_back(camera);
         }
 
-        return crow::json::wvalue(camerasJson);
+        return crow::json::wvalue(camerasJson); // TODO: отослать отсортированные
     });
 
     CROW_ROUTE(_app, "/post/camera").methods(crow::HTTPMethod::Post)
@@ -65,7 +65,7 @@ void Server::initREST()
                                     {"link", stream},
                                     {"areas", area} });
 
-        return crow::response(camera); // TODO: отослать отсортированные
+        return crow::response(camera);
     });
 
     CROW_ROUTE(_app, "/post/modify/camera").methods(crow::HTTPMethod::Post)
@@ -82,8 +82,51 @@ void Server::initREST()
 
         _database.modifyCamera(cameraId, cameraName, procDel, stream);
 
+        return crow::response(); // TODO: вернуть обновленную
+    });
+
+    CROW_ROUTE(_app, "/post/newArea").methods(crow::HTTPMethod::Post)
+    ([this](const crow::request& req)
+    {
+        auto areaData = crow::json::load(req.body);
+        if (!areaData)
+            return crow::response(400);
+
+        int idCamera = areaData["id"].i();
+        std::string area{areaData["areas"]};
+
+        _database.updateArea(idCamera, area);
+
         return crow::response();
     });
+
+
+
+//    std::mutex mtx;
+//    std::unordered_set<crow::websocket::connection*> users;
+
+//    CROW_ROUTE(_app, "/ws")
+//    .websocket()
+//    .onopen([&](crow::websocket::connection& conn)
+//    {
+//        std::lock_guard<std::mutex> _(mtx);
+//        users.insert(&conn);
+//    })
+//    .onclose([&](crow::websocket::connection& conn, const std::string& reason)
+//    {
+//        std::lock_guard<std::mutex> _(mtx);
+//        users.erase(&conn);
+//    })
+//    .onmessage([&](crow::websocket::connection& /*conn*/, const std::string& data, bool is_binary)
+//    {
+//        std::lock_guard<std::mutex> _(mtx);
+//        for(auto u:users)
+//            if (is_binary)
+//                u->send_binary(data);
+//            else
+//                u->send_text(data);
+//    });
+
 }
 
 void Server::run()

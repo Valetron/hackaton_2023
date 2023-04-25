@@ -20,26 +20,6 @@ void DBWorker::checkConnection(const std::string& dataBaseCredentials)
     _notifyCamera = std::make_unique<NotificationListener>(*_connection, "add_camera");
 }
 
-std::string DBWorker::getData(const std::string& tableName, const int id)
-{
-    pqxx::work txn(*_connection);
-    pqxx::result res;
-
-    if ("camera" == tableName)
-        res = txn.exec_prepared("select_camera", id);
-    else if ("event" == tableName)
-        res = txn.exec_prepared("select_event", id);
-    else
-        return std::string();
-
-    txn.commit();
-
-    if (res.empty())
-        return std::string();
-
-    return pqxx::to_string(res.at(0).at(0));
-}
-
 pqxx::result DBWorker::getAllCameras()
 {
     pqxx::work txn(*_connection);
@@ -49,22 +29,23 @@ pqxx::result DBWorker::getAllCameras()
 void DBWorker::addCamera(const std::string& cameraName, const int procDelay, const std::string& link, const std::string& areas)
 {
     pqxx::work txn(*_connection);
-    const auto allCameras = txn.exec_prepared("insert_camera", cameraName, procDelay, link, areas);
+    txn.exec_prepared("insert_camera", cameraName, procDelay, link, areas);
     txn.commit();
 }
 
 void DBWorker::modifyCamera(const int id, const std::string& cameraName, const int procDelay, const std::string& link)
 {
     pqxx::work txn(*_connection);
-    const auto allCameras = txn.exec_prepared("update_camera", id, cameraName, link, procDelay);
+    txn.exec_prepared("update_camera", id, cameraName, link, procDelay);
     txn.commit();
 }
 
-//void DBWorker::run()
-//{
-//    _connection->await_notification();
-//    std::clog << _notifyListener->getData() << "\n";
-//}
+void DBWorker::updateArea(const int id, const std::string& area)
+{
+    pqxx::work txn(*_connection);
+    txn.exec_prepared("update_area", id, area);
+    txn.commit();
+}
 
 void DBWorker::getEvent()
 {
