@@ -2,8 +2,8 @@ CREATE TABLE IF NOT EXISTS camera
 (
 	id serial PRIMARY KEY,
 	name varchar(24) NOT NULL,
-	processing_period int DEFAULT 19,
-	stream varchar(255) NOT NULL,
+	processDelay int DEFAULT 5,
+	link varchar(255) NOT NULL,
 	areas text
 );
 
@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS trace_point
 	camera_id int NOT NULL,
 	x int NOT NULL,
 	y int NOT NULL,
+	time_stamp timestamp DEFAULT current_timestamp,
 	FOREIGN KEY(camera_id) REFERENCES camera(id)
 );
 
@@ -36,5 +37,17 @@ CREATE OR REPLACE FUNCTION notify_realtime()
 	$BODY$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER updated_realtime_trigger AFTER INSERT ON event
+CREATE OR REPLACE TRIGGER updated_realtime_trigger_event AFTER INSERT ON event
 FOR EACH ROW EXECUTE PROCEDURE notify_realtime();
+
+CREATE OR REPLACE FUNCTION camera_realtime() 
+	RETURNS trigger as $BODY$
+		BEGIN
+		PERFORM pg_notify('add_camera', NEW.id::varchar);
+		RETURN NULL;
+		END;
+	$BODY$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER updated_realtime_trigger_camera AFTER INSERT ON camera
+FOR EACH ROW EXECUTE PROCEDURE camera_realtime();
