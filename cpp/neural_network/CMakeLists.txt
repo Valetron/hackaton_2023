@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.13)
-project(nn LANGUAGES CXX)
+project(neural_network LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -7,13 +7,11 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${ROOT_DIR}/utils)
 
-if(${OpenCV_DIR})
+if(ENV{OpenCV_DIR})
     set(OpenCV_DIR ${OpenCV_DIR})
 else()
     find_package(OpenCV REQUIRED)
 endif()
-
-
 
 file(GLOB SOURCES "src/*.cpp")
 file(GLOB HEADERS "include/*.h")
@@ -30,10 +28,7 @@ add_executable(${PROJECT_NAME}
 #            main.cpp)
 
 target_include_directories(${PROJECT_NAME}
-                           PUBLIC
-                           )
-
-
+                           PUBLIC)
 
 target_link_libraries(${PROJECT_NAME}
                       PUBLIC
