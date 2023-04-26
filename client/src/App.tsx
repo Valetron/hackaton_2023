@@ -5,6 +5,7 @@ import CanvasSelection from './components/CanvasSelection/CanvasSelection'
 import { BrowserRouter } from 'react-router-dom'
 import CameraAdd from './components/Cameras/CameraAdd'
 import CameraSettingsRouter from './components/AppRouter/CameraSettingsRouter'
+import Video from './components/Video/Video'
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
           <CameraAdd />
         }
         <main className="content">
+          <Video />
           {selectedCamera !== undefined ? selectedCamera.openedCanvas && <CanvasSelection /> : null}
         </main>
         <footer>
