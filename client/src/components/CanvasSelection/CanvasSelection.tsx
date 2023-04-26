@@ -224,13 +224,6 @@ const CanvasSelection = () => {
 
   const onSubmitAdding = async (title: string) => {
 
-    const newArea = {
-      cameraId: selectedCamera.id,
-      name: title,
-      points: pointsRef.current
-    }
-
-
     const cameraWithNewArea = {
       ...selectedCamera,
       areas: [
@@ -343,6 +336,3 @@ const euklidDistance = (x: number, x0: number, x1: number, y: number, y0: number
 }
 */
 
-
-// TODO: 133 .length = undefined... Сформировать для каждой зоны отельный массив точек, + имя еще можно дописать будет круто для селекшина в итоге
-// TODO: сделать сброс, поправить отрисовку
