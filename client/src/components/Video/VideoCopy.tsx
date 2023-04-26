@@ -3,24 +3,23 @@ import '../CanvasSelection/CanvasSelection.scss'
 
 
 export default function Video() {
-  const [time, setTime] = useState<any>(Date.now())
-
-  const source = '../../public/exp/labels/vidos.png'
+  const [src, setSrc] = useState<string>('')
+  const [counter, setCounter] = useState<number>(0)
 
   useEffect(() => {
      const interval = setInterval(() => {
-      console.log('rerender')
-      setTime(Date.now())
-    }, 40);
+      setCounter((prev) => prev + 1);
+    }, 125);
+    setSrc(`../../public/exp/labels/vidos_${counter}.png`)
 
     return () => {
       clearInterval(interval);
     };
-  }, [])
+  }, [src,counter])
 
   return (
     <>
-      <img src={source} id="canvas"/>
+      <img src={src} id="canvas"/>
     </>
   )
 }
