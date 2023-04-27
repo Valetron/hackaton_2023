@@ -19,13 +19,18 @@ file(GLOB HEADERS "include/*.h")
 add_executable(${PROJECT_NAME}
                ${HEADERS}
                ${SOURCES}
-               main.cpp)
+               main.cpp
+               common.hpp)
 
 #add_library(${PROJECT_NAME}
 #            SHARED
 #            ${HEADERS}
 #            ${SOURCES}
 #            main.cpp)
+
+if (USE_CUDA)
+    add_compile_definitions(CUDA_SUPPORT)
+endif()
 
 target_include_directories(${PROJECT_NAME}
                            PUBLIC)
