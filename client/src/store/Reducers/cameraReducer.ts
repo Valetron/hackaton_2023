@@ -4,17 +4,7 @@ import { ICamera, ICameraAreas } from "../../models/ICamera"
 import { serverUrl } from "../../server-info"
 
 const initialState = {
-  cameraArray: [
-    {
-      id:1,
-      name: 'test',
-      areas: [] as ICameraAreas[],
-      link: 'test',
-      processDelay: 5,
-      openedCanvas: false
-    }
-
-  ] as any, 
+  cameraArray: [] as any,
   error: '',
   isLoading: false
 }
