@@ -44,7 +44,7 @@ export default function Video() {
       }}
         onClick={() => {setNNStream((prev) => !prev)}}
       >{NNStream ? "Включить обычный поток" : "Включить обработанный поток"}</button>
-      <video src={NNStream ? NNStreamUrl : pureStreamUrl} id="video"/>
+      <img src={NNStream ? NNStreamUrl : pureStreamUrl} id="video"/>
     </>
   )
 }
