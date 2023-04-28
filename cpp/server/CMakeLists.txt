@@ -6,11 +6,18 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${ROOT_DIR}/utils)
+include_directories(${ROOT_DIR}/neural_network/include)
 
 find_package(PostgreSQL REQUIRED)
 find_package(libpqxx REQUIRED)
 find_package(Crow REQUIRED)
 find_package(nlohmann_json REQUIRED)
+
+if(ENV{OpenCV_DIR})
+    set(OpenCV_DIR ${OpenCV_DIR})
+else()
+    find_package(OpenCV REQUIRED)
+endif()
 
 file(GLOB SOURCES "src/*.cpp")
 file(GLOB HEADERS "include/*.h")
@@ -29,4 +36,5 @@ target_link_libraries(${PROJECT_NAME}
                       Crow::Crow
                       PostgreSQL::PostgreSQL
                       libpqxx::libpqxx
-                      nlohmann_json::nlohmann_json)
+                      nlohmann_json::nlohmann_json
+                      ${OpenCV_LIBS})

@@ -10,6 +10,7 @@
 #include <nlohmann/json.hpp>
 
 #include "db_worker.h"
+#include "NeuralNetwork.h"
 
 using json = nlohmann::json;
 
@@ -23,9 +24,14 @@ private:
     void initDataBase(const std::string& creds);
     void initREST();
     json foo();
+    void initNN();
+    void runModel(const std::string& cameraLink);
 
 private:
     DBWorker _database;
     crow::App<crow::CORSHandler> _app;
     int _port{0};
+//    std::unique_ptr<NeuralNetwork> _model;
+//    Colors _cl;
+
 };

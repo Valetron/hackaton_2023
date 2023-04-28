@@ -3,8 +3,8 @@
 Server::Server(const std::string& dbConfig, const int serverPort) : _port(serverPort)
 {
     initDataBase(dbConfig);
-//    initWebsocket();
     initREST();
+//    initNN();
 }
 
 void Server::initDataBase(const std::string& creds)
@@ -65,6 +65,8 @@ void Server::initREST()
                                     {"link", stream},
                                     {"areas", area} });
 
+        runModel(stream);
+
         return crow::response(camera);
     });
 
@@ -99,34 +101,30 @@ void Server::initREST()
 
         return crow::response();
     });
+}
 
+//void Server::initNN()
+//{
+//    _model = std::make_unique<NeuralNetwork>("./MODEL.onnx");
+//    _cl = Colors();
+//}
 
+void Server::runModel(const std::string& cameraLink)
+{
+    auto cap = cv::VideoCapture(cameraLink);
+    std::string modelPath = "MODEL.onnx";
+    NeuralNetwork _model(modelPath);
+    Colors _cl = Colors();
 
-//    std::mutex mtx;
-//    std::unordered_set<crow::websocket::connection*> users;
+    cv::Mat frame;
 
-//    CROW_ROUTE(_app, "/ws")
-//    .websocket()
-//    .onopen([&](crow::websocket::connection& conn)
-//    {
-//        std::lock_guard<std::mutex> _(mtx);
-//        users.insert(&conn);
-//    })
-//    .onclose([&](crow::websocket::connection& conn, const std::string& reason)
-//    {
-//        std::lock_guard<std::mutex> _(mtx);
-//        users.erase(&conn);
-//    })
-//    .onmessage([&](crow::websocket::connection& /*conn*/, const std::string& data, bool is_binary)
-//    {
-//        std::lock_guard<std::mutex> _(mtx);
-//        for(auto u:users)
-//            if (is_binary)
-//                u->send_binary(data);
-//            else
-//                u->send_text(data);
-//    });
+    while(cap.isOpened())
+    {
+        cap >> frame;
+        auto detections = _model.detect(frame);
 
+        _model.postProcess(frame, detections, _cl);
+    }
 }
 
 void Server::run()
