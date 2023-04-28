@@ -1,14 +1,17 @@
 import { useEffect, useRef, useState } from "react"
+import { pureStreamUrl, NNStreamUrl } from "../../server-info"
 import '../CanvasSelection/CanvasSelection.scss'
 
 
 export default function Video() {
   const [src, setSrc] = useState<string>('')
   const [counter, setCounter] = useState<number>(0)
+  const [NNStream, setNNStream] = useState<boolean>()
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const ctxRef = useRef(canvasRef.current?.getContext('2d'))
 
+  /*
   const drawImage = () => {
     let image = new Image(1920, 1080)
     image.src = src
@@ -30,10 +33,18 @@ export default function Video() {
       clearInterval(interval);
     };
   }, [src, counter])
+  */
 
   return (
     <>
-      <img src={src} id="canvas"/>
+      <button style={{
+        position: 'absolute',
+        top: '2rem',
+        right: '2rem'
+      }}
+        onClick={() => {setNNStream((prev) => !prev)}}
+      >{NNStream ? "Включить обычный поток" : "Включить обработанный поток"}</button>
+      <video src={NNStream ? NNStreamUrl : pureStreamUrl} id="video"/>
     </>
   )
 }

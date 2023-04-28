@@ -1,10 +1,20 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import axios from "axios"
-import { ICamera } from "../../models/ICamera"
+import { ICamera, ICameraAreas } from "../../models/ICamera"
 import { serverUrl } from "../../server-info"
 
 const initialState = {
-  cameraArray: [] as any, 
+  cameraArray: [
+    {
+      id:1,
+      name: 'test',
+      areas: [] as ICameraAreas[],
+      link: 'test',
+      processDelay: 5,
+      openedCanvas: false
+    }
+
+  ] as any, 
   error: '',
   isLoading: false
 }

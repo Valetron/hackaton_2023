@@ -1,9 +1,15 @@
 #canvas {
   width: 1280px;
-  height: 800px;
+  height: 720px;
   z-index: 2020;
   position: fixed;
+}
 
+#video {
+  width: 1280px;
+  height: 720px;
+  z-index: 2000;
+  position: fixed;
 }
 
 .canvas__button-div {

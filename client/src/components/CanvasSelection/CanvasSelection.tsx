@@ -264,7 +264,7 @@ const CanvasSelection = () => {
   return (
     <>
       {openedAddArea && <AreaAdd onPress={(title) => onSubmitAdding(title)} />}
-      <canvas ref={canvasRef} id="canvas" width={clientWidthRef.current * 0.67} height={800} />
+      <canvas ref={canvasRef} id="canvas" width={1280} height={720}/>
       {endSelection &&
         <div className="canvas__button-div">
           <h2>Добавить зону с текущим рисунком?</h2>

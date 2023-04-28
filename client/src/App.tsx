@@ -20,7 +20,7 @@ function App() {
           <CameraAdd />
         }
         <main className="content">
-          <Video />
+          {selectedCamera !== undefined && selectedCamera.id !== null ? <Video /> : null}
           {selectedCamera !== undefined ? selectedCamera.openedCanvas && <CanvasSelection /> : null}
         </main>
         <footer>
@@ -32,3 +32,4 @@ function App() {
 }
 
 export default App
+
