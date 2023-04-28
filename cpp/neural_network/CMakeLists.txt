@@ -13,14 +13,13 @@ else()
     find_package(OpenCV REQUIRED)
 endif()
 
-file(GLOB SOURCES "src/*.cpp")
-file(GLOB HEADERS "include/*.h")
+#file(GLOB SOURCES "src/*.cpp")
+#file(GLOB HEADERS "include/*.h")
 
 add_executable(${PROJECT_NAME}
-               ${HEADERS}
-               ${SOURCES}
-               main.cpp
-               common.hpp)
+#               ${HEADERS}
+#               ${SOURCES}
+               main.cpp)
 
 #add_library(${PROJECT_NAME}
 #            SHARED
@@ -36,5 +35,5 @@ target_include_directories(${PROJECT_NAME}
                            PUBLIC)
 
 target_link_libraries(${PROJECT_NAME}
-                      PUBLIC
+                      PRIVATE
                       ${OpenCV_LIBS})

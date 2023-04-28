@@ -25,11 +25,11 @@ public:
     NeuralNetwork() = default;
     NeuralNetwork(const std::string& model);
     void run(const std::string& video);
-    void detect(const cv::Mat& image);
+    void detect(cv::Mat& image);
 
 private:
     void initModel(const std::string& model);
-    void drawPred(float conf, int left, int top, int right, int bottom, cv::Mat frame, int classid);
+    void drawPred(float conf, int left, int top, int right, int bottom, cv::Mat& frame, int classid);
 
 private:
     cv::dnn::Net _net;
