@@ -1,84 +1,36 @@
-.camera__container {
-  padding: 1rem 0;
-  width: 100%;
-  height: auto;
+#canvas {
+  width: 1280px;
+  height: 720px;
+  z-index: 2020;
+  position: fixed;
 }
 
+#video {
+  width: 1280px;
+  height: 720px;
+  z-index: 2000;
+  position: fixed;
+}
 
-.camera__list {
-  width:100%;
+.canvas__button-div {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   gap: 1rem;
-  transition: 1.5s;
-  overflow:hidden;
-  margin-bottom: 1rem;
+  align-items: center;
 }
 
-.camera__item {
-  min-width: 100%;
-  min-height: 3.25rem;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: .5rem;
+.canvas__button-item {
+  text-align: center;
   background-color: var(--button-bg-color);
   border-radius: 5px;
   border: 1px solid var(--button-outline-color);
+  color: var(--title-color);
 }
 
-.camera__item:hover {
-  color: #FFFFFF;
-  cursor: pointer;
-  border: 1px solid var(--button-hover-outline-color);
-}
-
-.camera__item__selected {
-  color: #FFFFFF;
-  background-color: #52B69A;
-  border: 1px solid var(--button-hover-outline-color);
-}
-
-.camera__title {
-  position: relative;
-}
-
-
-.camera__item-icon {
+.canvas-add__container {
   position: absolute;
-  right: 1rem;
-}
-
-.camera__item-icon > i {
-  font-size: calc(var(--icon-size) + .25rem);
-}
-
-.camera__add-item {
-}
-
-.camera__add-item button {
-  color: #FFFFFF;
-  min-width: 100%;
-  min-height: 3.25rem;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: .5rem;
-  background-color: var(--button-action-color);
-  border-radius: 5px;
-  border: 1px solid var(--button-outline-color);
-}
-
-.camera__add-item button:focus {
-  outline: none;
-}
-
-.camera-add__container {
-  position: absolute;
-  left: 0;
   top: 0;
   width: 100vw;
   height: 100vh;
@@ -87,7 +39,7 @@
   align-items: center;
 }
 
-.camera-add__background {
+.canvas-add__background {
   position: absolute;
   left: 0;
   top: 0;
@@ -98,7 +50,7 @@
   background: rgba(0, 0, 0, 0.15);
 }
 
-.camera-add__item {
+.canvas-add__item {
   display: flex;
   flex-direction: column;
   flex-grow: 1 0 0;
@@ -154,6 +106,3 @@
     background-color: var(--button-action-color);
   }
 }
-
-
-

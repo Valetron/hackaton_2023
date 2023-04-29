@@ -1,6 +1,5 @@
 import { useEffect } from "react"
 import { useAppSelector } from "../../app/hooks"
-import { CamerasAreas, AreasPoints } from '../../store/cameraReducer'
 import ZonesItem from "./ZonesItem"
 
 
@@ -14,9 +13,9 @@ export default function ZonesList() {
 
   return (
     <ul className="zone__list">
-      {areas.map((areaObj: Array<CamerasAreas>) => areaObj.map((area: CamerasAreas) => (
-        <ZonesItem name={area.name} onPress={() => { }} />
-      )))
+      {areas.map((areaObj: any, index: number) => (
+        <ZonesItem key={index} name={areaObj.name} onPress={() => { }} />
+      ))
       }
     </ul>
   )

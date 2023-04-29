@@ -1,33 +1,64 @@
 import { useEffect, useState } from 'react'
 import { Input } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import { openAddCameraModalAction } from '../../store/cameraAddReducer'
-import { addCameraAction } from '../../store/cameraReducer'
+import { openAddCameraModal } from '../../store/Reducers/cameraAddReducer'
+import { addCamera } from '../../store/Reducers/cameraReducer'
+import { serverUrl } from '../../server-info'
+import axios from 'axios'
+import { openCanvas } from '../../store/Reducers/cameraSelectionReducer'
 
 export default function CameraAdd() {
 
+  const cameras = useAppSelector(state => state.cameraArray.cameraArray)
+  const selectedCamera = useAppSelector(state => state.currentCamera.selectedCamera)
+
   const [cameraName, setCameraName] = useState<string>('')
   const [cameraLink, setCameraLink] = useState<string>('')
+  const [cameraProcessDelay, setCameraProcessDelay] = useState<number>(5)
   const [onError, setError] = useState<boolean>(false)
 
   const dispatch = useAppDispatch()
 
   const closeWindow = () => {
-    dispatch(openAddCameraModalAction(false))
+    cameras.map((item: any) => item.id === selectedCamera.id ?
+      item.openedCanvas === true ? dispatch(openCanvas()) : null : null
+    )
+    dispatch(openAddCameraModal(false))
   }
 
-  const addCameraHandler = (name: string, link: string) => {
-
+  const addCameraHandler = async (name: string, link: string) => {
     if (name === '') {
       setError(true)
       return
     }
 
-    dispatch(addCameraAction({
+    const newPostCamera = {
       name: name,
-      link: link
-    }))
+      link: link,
+      areas: JSON.stringify([]),
+      processDelay: cameraProcessDelay,
+    }
+
+    try {
+      const response = await axios.post(`${serverUrl}/post/camera`, JSON.stringify(newPostCamera))
+
+      const newCameraObject = {
+        ...response.data,
+        areas: JSON.parse(response.data.areas),
+        openedCanvas: false
+      }
+
+      console.log(newCameraObject)
+
+      dispatch(addCamera(newCameraObject))
+    } catch (err) {
+      console.log(err)
+    }
+
     closeWindow()
+    cameras.map((item: any) => item.id === selectedCamera.id ?
+      item.openedCanvas === true ? dispatch(openCanvas()) : null : null
+    )
   }
 
   const blinkingPlaceholder = () => {
@@ -71,6 +102,10 @@ export default function CameraAdd() {
           <div>
             <div>Ссылка</div>
             <Input placeholder="Ссылка на камеру" value={cameraLink} onChange={(e) => setCameraLink(e.target.value)} />
+          </div>
+          <div>
+            <div>Интервал обработки</div>
+            <Input placeholder={`По умолчанию ${cameraProcessDelay}`} value={cameraProcessDelay} onChange={(e) => setCameraProcessDelay(Number(e.target.value))} />
           </div>
         </form>
         <div className="camera-add__item__buttons">

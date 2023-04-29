@@ -1,11 +1,13 @@
 import { useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import CameraItem from "./CameraItem"
-import { CamerasObjectArray } from '../../store/cameraReducer'
+import { ICamera } from "../../models/ICamera"
+import { fetchCameras } from '../../store/Reducers/cameraReducer'
 import './Cameras.scss'
-import { openAddCameraModalAction } from "../../store/cameraAddReducer"
-import { updateSelectedCamera } from "../../store/cameraSelectionReducer"
+import { openAddCameraModal } from "../../store/Reducers/cameraAddReducer"
+import { closeCanvas, updateSelectedCamera } from "../../store/Reducers/cameraSelectionReducer"
 import { useNavigate } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 
 
 
@@ -18,31 +20,34 @@ export default function CamerasList() {
 
   const navigate = useNavigate()
 
+  const itemID = useLocation().pathname.replace(/\D/g, "")
+
   const addCameraOpen = () => {
-    dispatch(openAddCameraModalAction({ opened: true }))
+    if (selectedCamera.openedCanvas) {
+      dispatch(closeCanvas())
+    }
+    dispatch(openAddCameraModal(true))
   }
 
-  const selectCameraHandler = (item: CamerasObjectArray) => {
-      dispatch(updateSelectedCamera({ ...item }))
-      navigate(`${item.id}`)
+  const selectCameraHandler = (item: ICamera) => {
+    dispatch(updateSelectedCamera({ ...item }))
+    navigate(`${item.id}`)
   }
 
   useEffect(() => {
-    if (selectedCamera.id !== undefined) {
-
-    }
+    dispatch(fetchCameras())
   }, [])
 
   return (
     <div className="camera__container">
       <ul className="camera__list">
         {cameraArray.map(
-          (item: CamerasObjectArray, index: number) => (
+          (item: ICamera, index: number) => (
             <CameraItem
               key={index}
               name={item.name}
               onPress={() => selectCameraHandler(item)}
-              isSelected={selectedCamera.id === item.id}
+              isSelected={selectedCamera?.id === item.id}
             />
           ))
         }

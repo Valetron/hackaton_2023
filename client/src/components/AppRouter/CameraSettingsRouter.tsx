@@ -1,5 +1,4 @@
 import { Route, Routes } from "react-router-dom";
-import { useAppSelector } from "../../app/hooks";
 import { CameraSettingsRoutes } from "./routes";
 
 export default function CameraSettingsRouter() {
